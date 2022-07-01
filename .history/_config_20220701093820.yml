@@ -113,4 +113,3 @@ theme: next
 deploy:
   - type: git
     repo: https://github.com/laterbuy/laterbuy.github.io.git
-    branch: [gh-pages]
