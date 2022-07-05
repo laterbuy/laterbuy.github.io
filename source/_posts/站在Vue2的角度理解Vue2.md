@@ -1,10 +1,11 @@
 ---
 title: 站在Vue2的角度理解Vue2
 description: 站在Vue2的角度理解Vue2
-date: 2022/05/17
-updated: 2022/05/17
-tags: 
+date: 2022/05/05
+updated: 2022/05/05
+tags:
   - Vue
+  - 前端
 categories:
   - Vue
 ---
@@ -30,14 +31,12 @@ Object.defineProperty(Person, 'name', {
 })
 ```
 
-![Untitled](%E7%AB%99%E5%9C%A8Vue2%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3Vue2%20913d53e2b7ad411384eb1e1cf88b5778/Untitled.png)
+![image-20220704175618807](站在Vue2的角度理解Vue2/image-20220704175618807-16569286501204.png)
 
 ### 自定义实现代码
 
 自定义vuejs部分
 
-<details><summary>点击展开</summary>
-    
 ```JavaScript
 class Vue {
   constructor(obj_instance) {
@@ -168,41 +167,38 @@ class Watcher {
   }
 }
 ```
-</details>  
 
 相关html
 
-- 点击展开
-    
-    ```jsx
-    <!DOCTYPE html>
-    <html lang="en">
-    <body>
-        <div id="app">
-            <span>name {{name}}</span>
-            <input type="text" v-model="name" />
-            <span>desc {{more.desc}}</span>
-            <input type="text" v-model="more.desc" />
-        </div>
-    </body>
-    </html>
-    
-    <script src="./vue.js"></script>
-    
-    <script>
-        const vm = new Vue({
-            el: '#app',
-            data: {
-                name: 'test',
-                more: {
-                    desc: 1000
-                }
+
+```jsx
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div id="app">
+        <span>name {{name}}</span>
+        <input type="text" v-model="name" />
+        <span>desc {{more.desc}}</span>
+        <input type="text" v-model="more.desc" />
+    </div>
+</body>
+</html>
+
+<script src="./vue.js"></script>
+
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            name: 'test',
+            more: {
+                desc: 1000
             }
-        })
-        window.vm = vm
-    </script>
-    ```
-    
+        }
+    })
+    window.vm = vm
+</script>
+```
 
 ### 参考
 

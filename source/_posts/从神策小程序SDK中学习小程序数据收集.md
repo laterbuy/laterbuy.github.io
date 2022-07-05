@@ -1,9 +1,13 @@
-# 从神策小程序SDK中学习小程序数据收集
-
-Description: 从神策小程序SDK中学习小程序数据收集
-Public: Yes
-Published: 2022/02/09
-Tags: 小程序
+---
+title: 从神策小程序SDK中学习小程序数据收集
+description: 从神策小程序SDK中学习小程序数据收集
+date: 2022/02/09
+updated: 2022/02/09
+tags:
+  - 小程序
+categories:
+  - 小程序
+---
 
 ### 背景
 

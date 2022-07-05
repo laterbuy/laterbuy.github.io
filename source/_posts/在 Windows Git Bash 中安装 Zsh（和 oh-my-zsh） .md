@@ -1,11 +1,13 @@
 ---
 title: 在 Windows Git Bash 中安装 Zsh
+description: 在 Windows Git Bash 中安装 Zsh
 date: 2022/01/18
+updated: 2022/01/18
 tags: 
-  - 测试
-  - 测试１
+  - 环境配置
+  - windows
 categories:
-  - 测试2
+  - 环境配置
 ---
 
 ### 在 Git Bash 中安装 Zsh
@@ -61,7 +63,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/
 
 1. 安装`zsh-autosuggestions`
 - 注意：终端中可能会出现奇怪的伪影和间距。要解决此问题，请使用版本：`v0.7.0v.0.6.4`
-    
+  
     `cd ~/.oh-my-zsh/plugins/zsh-autosuggestions
     git checkout tags/v0.6.4 -b v0.6.4-branch`
     

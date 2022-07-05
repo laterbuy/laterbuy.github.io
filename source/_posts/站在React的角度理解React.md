@@ -1,8 +1,16 @@
-# 站在React的角度理解React
+---
+title: 站在React的角度理解React
+description: 站在React的角度理解React
+date: 2022/05/17
+updated: 2022/05/17
+tags:
+  - React
+  - 前端
+categories:
+  - React
+---
 
-Public: Yes
-Published: 2022/05/05
-Tags: React
+
 
 ### 前言
 
@@ -29,90 +37,86 @@ jsx 转换为原生 js 需要通过一些诸如`babel`的编译工具。编译�
 
 例如如下的`jsx`节点：
 
-- 点击展开
-    
-    ```tsx
-    const element = (
-        <div id="id">
-          <div className="className">
-            <h3 style="color: red">
-              <span>hello</span>
-            </h3>
-          </div>
-          <header>
-            <h2>World</h2>
-          </header>
-        </div>
-      )
-    ```
-    
+
+```tsx
+const element = (
+    <div id="id">
+      <div className="className">
+        <h3 style="color: red">
+          <span>hello</span>
+        </h3>
+      </div>
+      <header>
+        <h2>World</h2>
+      </header>
+    </div>
+  )
+```
+
 
 最终会被`React.createElement(...)`转化成如下的一个对象返回：
-
-- 点击展开
-    
-    ```json
-    {
-      "type": "div",
-      "props": {
-        "id": "id",
-        "children": [
-          {
-            "type": "div",
-            "props": {
-              "className": "className",
-              "children": [
-                {
-                  "type": "h3",
-                  "props": {
-                    "style": "color: red",
-                    "children": [
-                      {
-                        "type": "span",
-                        "props": {
-                          "children": [
-                            {
-                              "type": "TEXT_ELEMENT",
-                              "props": {
-                                "nodeValue": "hello",
-                                "children": []
-                              }
-                            }
-                          ]
+```json
+{
+  "type": "div",
+  "props": {
+    "id": "id",
+    "children": [
+      {
+        "type": "div",
+        "props": {
+          "className": "className",
+          "children": [
+            {
+              "type": "h3",
+              "props": {
+                "style": "color: red",
+                "children": [
+                  {
+                    "type": "span",
+                    "props": {
+                      "children": [
+                        {
+                          "type": "TEXT_ELEMENT",
+                          "props": {
+                            "nodeValue": "hello",
+                            "children": []
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   }
-                }
-              ]
+                ]
+              }
             }
-          },
-          {
-            "type": "header",
-            "props": {
-              "children": [
-                {
-                  "type": "h2",
-                  "props": {
-                    "children": [
-                      {
-                        "type": "TEXT_ELEMENT",
-                        "props": {
-                          "nodeValue": "World",
-                          "children": []
-                        }
-                      }
-                    ]
+          ]
+        }
+      },
+      {
+        "type": "header",
+        "props": {
+          "children": [
+            {
+              "type": "h2",
+              "props": {
+                "children": [
+                  {
+                    "type": "TEXT_ELEMENT",
+                    "props": {
+                      "nodeValue": "World",
+                      "children": []
+                    }
                   }
-                }
-              ]
+                ]
+              }
             }
-          }
-        ]
+          ]
+        }
       }
-    }
-    ```
-    
+    ]
+  }
+}
+```
+
 
 ### `fiber` 对象
 
@@ -127,7 +131,7 @@ jsx 转换为原生 js 需要通过一些诸如`babel`的编译工具。编译�
 
 假设需要渲染上述`ReactElement` 对象，生成的 `fiber`树如图：
 
-![Untitled](%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/Untitled.png)
+![Untitled](站在React的角度理解React/Untitled.png)
 
 `fiber` 树的目标是非常容易找到下一个单元工作，这也是为什么每一个 `fiber` 节点都有指向第一个节点和相邻节点以及父节点的链接。当我们完成在 `fiber` 上面的工作后，`fiber` 拥有 `child` 属性可以直接指向下一个需要进行工作的 `fiber` 节点。
 
@@ -137,7 +141,7 @@ jsx 转换为原生 js 需要通过一些诸如`babel`的编译工具。编译�
 
 了解了两个最重要的对象和`requestIdleCallback`API后，React内部的渲染逻辑可以简单抽象为这样：
 
-![Untitled](%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/Untitled%201.png)
+![Untitled](站在React的角度理解React/Untitled 1.png)
 
 按照这个流程其实React第一次渲染时并不快，因为要额外生成fiber树，但是依靠fiber树这个数据结构，React更新是很快的，因为React保留了上次渲染完的fiber树。
 
@@ -153,12 +157,8 @@ jsx 转换为原生 js 需要通过一些诸如`babel`的编译工具。编译�
 
 1 [建造属于你的react - 唐鼎的个人博客 (tangdingblog.cn)](https://www.tangdingblog.cn/blog/react/buildyourownreact-2020-09-22/#renderandcommit)
 
-[建造属于你的react - 唐鼎的个人博客 (2022_4_29 20_09_06).html](%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/%E5%BB%BA%E9%80%A0%E5%B1%9E%E4%BA%8E%E4%BD%A0%E7%9A%84react_-_%E5%94%90%E9%BC%8E%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2_(2022_4_29_20_09_06).html)
 
 2 [这可能是最通俗的 React Fiber 打开方式 (qq.com)](https://mp.weixin.qq.com/s/Xab2Bu9yMPk6I5eeIedxjg)
 
-[这可能是最通俗的 React Fiber 打开方式 (2022_4_29 23_24_19).html](%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84_React_Fiber_%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F_(2022_4_29_23_24_19).html)
 
 3 [高频对象 - 图解React (7kms.github.io)](https://7kms.github.io/react-illustration-series/main/object-structure/)
-
-[simple-react.pdf](%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/simple-react.pdf)
