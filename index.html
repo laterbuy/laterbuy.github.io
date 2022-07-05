@@ -158,12 +158,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -192,483 +192,6 @@
 
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B01%20e3eaa7ecc770498dbd30e2ee7ed433e5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hou">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="侯的博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 侯的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B01%20e3eaa7ecc770498dbd30e2ee7ed433e5/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-06-28 12:58:57 / 修改时间：04:58:24" itemprop="dateCreated datePublished" datetime="2022-06-28T12:58:57+08:00">2022-06-28</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="数据库的简单实现1"><a href="#数据库的简单实现1" class="headerlink" title="数据库的简单实现1"></a>数据库的简单实现1</h1><p>Description: 最简单的K-V数据库后端实现<br>Public: No<br>Published: 2022&#x2F;03&#x2F;09<br>Tags: 数据库</p>
-<p>这里将用TypeScript开始实现一个最简单的 Key-Value 数据库，以理解数据库是怎么工作的。</p>
-<h3 id="建立-REPL-环境"><a href="#建立-REPL-环境" class="headerlink" title="建立 REPL 环境"></a><strong><strong>建立 REPL 环境</strong></strong></h3><p>首先要建立建立 REPL 环境，这样就可以在终端输入语句，然后查看输出，并不断进行这个循环直到停止使用。</p>
-<p>Node.js 的标准库本身提供了一个叫 <code>repl</code>的模块，只需要几行代码，就可以非常迅速的建立起一个 REPL 环境。</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">repl.<span class="title function_">start</span>(&#123;</span><br><span class="line">  <span class="attr">prompt</span>: <span class="string">&#x27;db.js &gt;&gt; &#x27;</span>,</span><br><span class="line">  <span class="attr">eval</span>: <span class="function">(<span class="params">evalCmd</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">callback</span>(<span class="literal">null</span>, <span class="string">`Unrecognized command <span class="subst">$&#123;evalCmd&#125;</span>`</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>使用 <code>ts-node</code>这样的工具来直接运行这个文件，就可以跑起来了。为了测试，试试输入 <code>test</code>并回车，可以看到下面这样的输出：</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="property">js</span> &gt;&gt; test</span><br><span class="line"><span class="title class_">Unrecognized</span> command <span class="string">&#x27;test&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="最简单的实现"><a href="#最简单的实现" class="headerlink" title="最简单的实现"></a>最简单的实现</h3><p>实现一个将数据存储到硬盘上的数据库，这样即使进程退出数据也不会丢失。</p>
-<p>实现思路：直接把数据序列化以后作为文本塞到文件的最后，同时把键和值用逗号分割。每当读取数据时，扫描这个文件来一行一行遍历查询键名。</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> fs <span class="keyword">from</span> <span class="string">&#x27;fs&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> readline <span class="keyword">from</span> <span class="string">&#x27;readline&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> dbFile = <span class="string">&#x27;./data.db&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">get</span> = (<span class="params">key: string</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> readable = fs.<span class="title function_">createReadStream</span>(dbFile);</span><br><span class="line">  <span class="keyword">const</span> reader = readline.<span class="title function_">createInterface</span>(&#123; <span class="attr">input</span>: readable &#125;);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>&lt;string&gt;(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="attr">value</span>: any;</span><br><span class="line">    reader.<span class="title function_">on</span>(<span class="string">&#x27;line&#x27;</span>, <span class="function"><span class="params">line</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> [k, v] = line.<span class="title function_">split</span>(<span class="string">&#x27;,&#x27;</span>);</span><br><span class="line">      <span class="keyword">if</span> (k === key) &#123;</span><br><span class="line">        value = v;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    readable.<span class="title function_">on</span>(<span class="string">&#x27;end&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      reader.<span class="title function_">close</span>();</span><br><span class="line">      <span class="title function_">resolve</span>(value);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">set</span> = (<span class="params">key: string, value: any</span>) =&gt; &#123;</span><br><span class="line">  fs.<span class="title function_">appendFileSync</span>(dbFile, <span class="string">`<span class="subst">$&#123;key&#125;</span>,<span class="subst">$&#123;value&#125;</span>\n`</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>然后简单的修改一下 <code>eval</code> 参数以接入 <code>set</code> 和 <code>get</code> 接口，可以先不管解析 SQL 语句之类的事情，使用一个最简单的语法，</p>
-<ul>
-<li><code>set [key] [value]</code></li>
-<li><code>get [key]</code></li>
-</ul>
-<p>语法的解析也是暂时假定所有的输入都是正确的格式，这样可以用非常简单的方式来实现：</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> replServer = repl.<span class="title function_">start</span>(&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="attr">eval</span>: <span class="keyword">async</span> (evalCmd, _, __, callback) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> cmd = evalCmd.<span class="title function_">trim</span>();</span><br><span class="line">    <span class="keyword">if</span> (cmd.<span class="title function_">startsWith</span>(<span class="string">&quot;set&quot;</span>)) &#123;</span><br><span class="line">      <span class="keyword">const</span> [, key, value] = cmd.<span class="title function_">split</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">      <span class="title function_">set</span>(key, value);</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="literal">null</span>, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (cmd.<span class="title function_">startsWith</span>(<span class="string">&quot;get&quot;</span>)) &#123;</span><br><span class="line">      <span class="keyword">const</span> [, key] = cmd.<span class="title function_">split</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">      <span class="keyword">const</span> value = <span class="keyword">await</span> <span class="title function_">get</span>(key);</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="literal">null</span>, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="literal">null</span>, <span class="string">`Unrecognized command <span class="subst">$&#123;evalCmd&#125;</span>`</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>启动以后测试一下，可以看到已经成功了：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">db.js &gt;&gt; set a aaa</span><br><span class="line">&#x27;aaa&#x27;</span><br><span class="line">db.js &gt;&gt; set b bbb</span><br><span class="line">&#x27;bbb&#x27;</span><br><span class="line">db.js &gt;&gt; get a</span><br><span class="line">&#x27;aaa&#x27;</span><br><span class="line">db.js &gt;&gt; set a ccc</span><br><span class="line">&#x27;ccc&#x27;</span><br><span class="line">db.js &gt;&gt; get a</span><br><span class="line">&#x27;ccc&#x27;</span><br></pre></td></tr></table></figure>
-
-<p><code>set</code> 函数在简单的场景性能其实非常好，因为在文件尾部追加写入其实是很高效的，像很多日志的实现，都是一个 <strong>append-only</strong> 的文件，虽然还有像并发，容错等很多额外的事情要处理，但核心原理是一样的。</p>
-<p>但对于读取数据的 <code>get</code> 操作，它的性能则非常糟糕，因为每次必须从头到尾扫描整个文件来进行查找。从算法的角度来说，它的复杂度是 <strong>O(N)</strong> 。也就是说随着数据量的增大，查找的时间也会线性增长。要解决这个问题，需要引入一个叫 <strong>索引</strong> 的额外结构，比如查汉语字典时，可以根据偏旁部首或者拼音，在目录中找到他们的大概位置，直接翻到那一页再仔细一条条查找，索引的概念和目录就是一样的。</p>
-<p>同时还有一个问题，在存储时将所有的值序列化为字符串再作为文本直接写入到文件中，同时使用逗号分隔键和值，这个叫 <strong>CSV (comma-separated values)</strong> 格式，写入时会默认使用 UTF-8 的编码格式，每一个 UTF-8 字符会使用 1-4 个字节来存储，但对某些值来说，将其转化成字符串有可能会增大它的体积，例如布尔值完全可以用一个 bit 位来代替，而转变成了字符串 “true” 在 UTF-8 中则变成了 4 个字节。</p>
-<p>使用文本格式的最大优点，是提供给了人类一个很好的可读性，事实上 MySQL 确实就有一个<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.7/en/csv-storage-engine.html">CSV 存储引擎</a>。但在绝大多数情况下，文本格式并不是一个最佳选择，毕竟提供给人类可读性并不是一个很高优的目标，而使用二进制格式能有更好的性能表现。</p>
-<p>虽然用 Node.js 来实现肯定不会有太好的性能，但这个学习过程中会像设计一个真正的数据库一样去思考。在 Node 中可以利用 <code>[Buffer](https://nodejs.org/api/buffer.html#buffer)</code> 来实现对二进制数据进行操作，因此后续会将文本格式改为二进制格式。</p>
-<ul>
-<li><p>最后附上完整的代码：</p>
-  <figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> repl <span class="keyword">from</span> <span class="string">&quot;repl&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> fs <span class="keyword">from</span> <span class="string">&quot;fs&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> readline <span class="keyword">from</span> <span class="string">&quot;readline&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> path <span class="keyword">from</span> <span class="string">&quot;path&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> dbFile = <span class="string">&quot;./data.db&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 从 db文件中遍历所有行找数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; <span class="variable">key</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">*</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">get</span> = (<span class="params">key: <span class="built_in">string</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> readable = fs.<span class="title function_">createReadStream</span>(dbFile);</span><br><span class="line">  <span class="keyword">const</span> reader = readline.<span class="title function_">createInterface</span>(&#123; <span class="attr">input</span>: readable &#125;);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>&lt;<span class="built_in">string</span>&gt;(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="attr">value</span>: <span class="built_in">string</span>;</span><br><span class="line">    reader.<span class="title function_">on</span>(<span class="string">&quot;line&quot;</span>, <span class="function">(<span class="params">line: <span class="built_in">string</span></span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> [k, v] = line.<span class="title function_">split</span>(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">      <span class="keyword">if</span> (k === key) &#123;</span><br><span class="line">        value = v;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    readable.<span class="title function_">on</span>(<span class="string">&quot;end&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      reader.<span class="title function_">close</span>();</span><br><span class="line">      <span class="title function_">resolve</span>(value);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 写数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; <span class="variable">key</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; <span class="variable">value</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">*</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">set</span> = (<span class="params">key: <span class="built_in">string</span>, value: <span class="built_in">string</span></span>) =&gt; &#123;</span><br><span class="line">  fs.<span class="title function_">appendFileSync</span>(dbFile, <span class="string">`<span class="subst">$&#123;key&#125;</span>,<span class="subst">$&#123;value&#125;</span>\n`</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 检查DB文件是否存在，不存在则创建</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; <span class="variable">filePath</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">*</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">checkFiles</span> = (<span class="params">filePath: <span class="built_in">string</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> p = path.<span class="title function_">resolve</span>(process.<span class="title function_">cwd</span>(), filePath);</span><br><span class="line">  <span class="keyword">const</span> exist = fs.<span class="title function_">existsSync</span>(p);</span><br><span class="line">  <span class="keyword">if</span> (!exist) &#123;</span><br><span class="line">    fs.<span class="title function_">writeFileSync</span>(p, <span class="string">&quot;&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">repl.<span class="title function_">start</span>(&#123;</span><br><span class="line">  <span class="attr">prompt</span>: <span class="string">&quot;db.js &gt;&gt; &quot;</span>,</span><br><span class="line">  <span class="attr">eval</span>: <span class="keyword">async</span> (evalCmd, _context, _file, callback) =&gt; &#123;</span><br><span class="line">    <span class="title function_">checkFiles</span>(dbFile);</span><br><span class="line">    <span class="keyword">const</span> cmd = evalCmd.<span class="title function_">trim</span>();</span><br><span class="line">    <span class="keyword">if</span> (cmd.<span class="title function_">startsWith</span>(<span class="string">&quot;set&quot;</span>)) &#123;</span><br><span class="line">      <span class="keyword">const</span> [, key, value] = cmd.<span class="title function_">split</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">      <span class="title function_">set</span>(key, value);</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="literal">null</span>, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (cmd.<span class="title function_">startsWith</span>(<span class="string">&quot;get&quot;</span>)) &#123;</span><br><span class="line">      <span class="keyword">const</span> [, key] = cmd.<span class="title function_">split</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">      <span class="keyword">const</span> value = <span class="keyword">await</span> <span class="title function_">get</span>(key);</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="literal">null</span>, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="literal">null</span>, <span class="string">`Unrecognized command <span class="subst">$&#123;evalCmd&#125;</span>`</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><strong><strong>Build a Simple Database</strong></strong></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/%E4%BB%8E%E7%A5%9E%E7%AD%96%E5%B0%8F%E7%A8%8B%E5%BA%8FSDK%E4%B8%AD%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86%20fca75c5f8c114b918b55232bb40d7358/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hou">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="侯的博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 侯的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/28/%E4%BB%8E%E7%A5%9E%E7%AD%96%E5%B0%8F%E7%A8%8B%E5%BA%8FSDK%E4%B8%AD%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86%20fca75c5f8c114b918b55232bb40d7358/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-06-28 12:58:57 / 修改时间：04:58:22" itemprop="dateCreated datePublished" datetime="2022-06-28T12:58:57+08:00">2022-06-28</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="从神策小程序SDK中学习小程序数据收集"><a href="#从神策小程序SDK中学习小程序数据收集" class="headerlink" title="从神策小程序SDK中学习小程序数据收集"></a>从神策小程序SDK中学习小程序数据收集</h1><p>Description: 从神策小程序SDK中学习小程序数据收集<br>Public: Yes<br>Published: 2022&#x2F;02&#x2F;09<br>Tags: 小程序</p>
-<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>业务需求，需要收集用户在小程序端的特定行为（页面浏览时长，点击行为等）。</p>
-<h3 id="初始实现"><a href="#初始实现" class="headerlink" title="初始实现"></a>初始实现</h3><p>刚开始是根据业务需求，在小程序端特定页面或者特定的事件上添加函数处理，重复代码多，每次修改很麻烦。</p>
-<h3 id="神策的实现"><a href="#神策的实现" class="headerlink" title="神策的实现"></a>神策的实现</h3><p>在同事的帮助下看了神策收集数据的方式，将小程序特定行为数据的收集写成可配置的，大大减少了重复代码，提高了代码可维护性。</p>
-<h3 id="神策SDK中的简单实现"><a href="#神策SDK中的简单实现" class="headerlink" title="神策SDK中的简单实现"></a>神策SDK中的简单实现</h3><p>小程序根据组件级别可以分为App、Page和Component。</p>
-<ol>
-<li>App</li>
-</ol>
-<p>监听App的显示和隐藏比较简单，小程序有提供专门的API</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 小程序显示</span></span><br><span class="line">wx.<span class="title function_">onAppShow</span>(<span class="keyword">function</span> (<span class="params">para</span>) &#123;</span><br><span class="line">  <span class="comment">// 获取小程序启动时的参数。与 App.onLaunch 的回调参数一致</span></span><br><span class="line">  <span class="keyword">const</span> option = wx.<span class="title function_">getLaunchOptionsSync</span>();</span><br><span class="line">  <span class="comment">// 处理逻辑</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 小程序隐藏</span></span><br><span class="line">wx.<span class="title function_">onAppHide</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 处理逻辑</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>Page</li>
-</ol>
-<p>在app.js中，App.onLaunch 中重写下Page，以记录进入每个页面的浏览时长为例：</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> pageEnterTime;</span><br><span class="line"><span class="title class_">App</span>(&#123;</span><br><span class="line">  <span class="attr">onLaunch</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> oldPage = <span class="title class_">Page</span></span><br><span class="line">    <span class="title class_">Page</span> = <span class="keyword">function</span> (<span class="params">obj</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> oldOnLoad = obj.<span class="property">onLoad</span></span><br><span class="line">      <span class="comment">// 进入页面</span></span><br><span class="line">      obj.<span class="property">onLoad</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageEnterTime = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">        oldOnLoad &amp;&amp; oldOnLoad.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">const</span> oldOnHide = obj.<span class="property">onHide</span></span><br><span class="line">      <span class="comment">// 页面跳转</span></span><br><span class="line">      obj.<span class="property">onHide</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageStayTime = <span class="title class_">Date</span>.<span class="title function_">now</span>() - pageEnterTime;</span><br><span class="line">        <span class="comment">// 记录时间</span></span><br><span class="line">        oldOnHide &amp;&amp; oldOnHide.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> oldOnUnload = obj.<span class="property">onUnload</span></span><br><span class="line">      <span class="comment">// 返回按钮</span></span><br><span class="line">      obj.<span class="property">onUnload</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageStayTime = <span class="title class_">Date</span>.<span class="title function_">now</span>() - pageEnterTime</span><br><span class="line">        <span class="comment">// 记录时间</span></span><br><span class="line">        oldOnUnload &amp;&amp; oldOnUnload.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="title function_">oldPage</span>(obj);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>其他的点击事件或者页面事件类似，都可以写成这种可配置的方式</p>
-<ol>
-<li>Component</li>
-</ol>
-<p>Component和Page类似，在App.onLaunch 中重写下Component，然后处理Component事件或者点击事件</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://github.com/sensorsdata/sa-sdk-miniprogram/blob/master/product/sensorsdata.full.js">sa-sdk-miniprogram</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B02%209a385c204a294fd8acf4d6da88b5388e/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hou">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="侯的博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 侯的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B02%209a385c204a294fd8acf4d6da88b5388e/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-06-28 12:58:57 / 修改时间：04:58:22" itemprop="dateCreated datePublished" datetime="2022-06-28T12:58:57+08:00">2022-06-28</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>6.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="数据库的简单实现2"><a href="#数据库的简单实现2" class="headerlink" title="数据库的简单实现2"></a>数据库的简单实现2</h1><p>Description: 添加索引和二进制格式存储<br>Public: No<br>Published: 2022&#x2F;03&#x2F;16<br>Tags: 数据库</p>
-<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>索引是从主数据衍生出来的额外结构，添加和删除索引完全不会影响数据，只会影响查询的性能。维护这个结构会产生一些开销，因为需要在写入的时候多做一点操作，去更新索引，这样才能在读取的时候利用索引来加快一点速度。任何类型的索引通常都会减慢写入速度，因此数据库默认并不会索引所有的内容，而是需要用户来根据自己的情况做出取舍来手动选择索引，尽量选择那些带来较大收益而且又不会引入超出必要开销的索引。</p>
-<h3 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h3><p>之前实现的简单数据库，可以使用<code>Map</code>来索引文件中的数据，假设依然是追加写入的文件，和之前一样，可以设计一个最简单的索引策略：保留一个内存中的散列映射，其中每个键都映射到数据文件中的一个字节偏移量，指明了可以找到对应值的位置。</p>
-<h3 id="为数据库加上索引并把存储格式改为二进制"><a href="#为数据库加上索引并把存储格式改为二进制" class="headerlink" title="为数据库加上索引并把存储格式改为二进制"></a>为数据库加上索引并把存储格式改为二进制</h3><p>接下来开始实现一个最简单的保存在内存中的哈希索引，这在 Node 环境中非常简单，只需要用一个 <code>Map</code>就可以。数据存储为二进制后，可以将数据看成一个大的数组，读取数据只需要知道数据的下标和数据的大小就可以:</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Offset</span> = <span class="built_in">number</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Size</span> = <span class="built_in">number</span>; <span class="comment">// how many bytes</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Index</span> = [<span class="title class_">Offset</span>, <span class="title class_">Size</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>&lt;<span class="built_in">string</span>, <span class="title class_">Index</span>&gt;();</span><br></pre></td></tr></table></figure>
-
-<p>对于不同的数据类型，需要针对性的将其转换为二进制，简单起见，暂时只支持三种数据类型，分别是数字、布尔值和字符串:</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">enum</span> <span class="title class_">DataType</span> &#123;  <span class="title class_">Boolean</span>,  <span class="title class_">Number</span>,  <span class="title class_">String</span>,&#125;</span><br></pre></td></tr></table></figure>
-
-<p>针对这三个类型编写一个序列化的函数，同时，为了在读取时针对性的进行反序列化，我们还需要将它的类型信息也存进去，规则是下面这样的：</p>
-<ul>
-<li>每一个数据都用第一个字节来存储它的类型信息，0，1，2 分别对应布尔值，数字和字符串；</li>
-<li>布尔值，用一个字节来表示（主要是 Node 最少得分配一个字节），1 为 true，0 为 false；</li>
-<li>数字，因为 Node 中的普通数字实际上都是双精度浮点数，我们就将其都作为 double 处理，占用 8 个字节（64 位），对于可能溢出的大数字先不管；</li>
-<li>除了布尔和数字，其他都当做字符串处理，采用 UTF-8 编码。</li>
-</ul>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> serialize = (<span class="attr">val</span>: <span class="built_in">boolean</span> | <span class="built_in">number</span> | <span class="built_in">string</span>): <span class="function"><span class="params">Buffer</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">buf</span>: <span class="title class_">Buffer</span>;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">type</span>: <span class="title class_">Buffer</span>;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">data</span>: <span class="title class_">Buffer</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">switch</span> (<span class="keyword">typeof</span> val) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;boolean&#x27;</span>: &#123;</span><br><span class="line">      <span class="keyword">type</span> = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(<span class="number">1</span>, <span class="title class_">DataType</span>.<span class="property">Boolean</span>);</span><br><span class="line">      data = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(<span class="number">1</span>, val ? <span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;number&#x27;</span>: &#123;</span><br><span class="line">      <span class="keyword">type</span> = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(<span class="number">1</span>, <span class="title class_">DataType</span>.<span class="property">Number</span>);</span><br><span class="line">      data = <span class="title class_">Buffer</span>.<span class="title function_">allocUnsafe</span>(<span class="number">8</span>);</span><br><span class="line">      data.<span class="title function_">writeDoubleBE</span>(val);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;string&#x27;</span>: &#123;</span><br><span class="line">      <span class="keyword">type</span> = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(<span class="number">1</span>, <span class="title class_">DataType</span>.<span class="property">String</span>);</span><br><span class="line">      data = <span class="title class_">Buffer</span>.<span class="title function_">from</span>(val);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attr">default</span>: &#123;</span><br><span class="line">      <span class="keyword">type</span> = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(<span class="number">1</span>, <span class="title class_">DataType</span>.<span class="property">String</span>);</span><br><span class="line">      data = <span class="title class_">Buffer</span>.<span class="title function_">from</span>(val);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  buf = <span class="title class_">Buffer</span>.<span class="title function_">concat</span>([<span class="keyword">type</span>, data]);</span><br><span class="line">  <span class="keyword">return</span> buf;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>注意数字的部分用到了 <code>buffer.writeDoubleBE</code>，<code>BE</code>的意思是 <strong>Big-Endian</strong>，中文叫大端序，还有一种叫小端序，对于<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Endianness">字节序</a>这里不赘述。具体使用什么样的字节序没什么讲究，重要的是在序列化和反序列化的时候一定要使用相同的字节序，这里我们默认全部使用大端序。</p>
-<p>反序列化也很简单：</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> deserialize = (<span class="attr">buf</span>: <span class="title class_">Buffer</span>): boolean | number | <span class="function"><span class="params">string</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> type = buf[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="title class_">DataType</span>.<span class="property">Boolean</span>: &#123;</span><br><span class="line">      <span class="keyword">return</span> buf[<span class="number">1</span>] === <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="title class_">DataType</span>.<span class="property">Number</span>: &#123;</span><br><span class="line">      <span class="keyword">return</span> buf.<span class="title function_">readDoubleBE</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="title class_">DataType</span>.<span class="property">String</span>: &#123;</span><br><span class="line">      <span class="keyword">return</span> buf.<span class="title function_">slice</span>(<span class="number">1</span>).<span class="title function_">toString</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attr">default</span>:</span><br><span class="line">      <span class="keyword">return</span> buf.<span class="title function_">slice</span>(<span class="number">1</span>).<span class="title function_">toString</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>整体的思路就确定了：</p>
-<ul>
-<li>启动时先获取数据库文件 fd，开启 repl 环境；</li>
-<li>对于 set 命令把 key&#x2F;value 交给 <code>set</code> 函数，进行序列化，先更新索引，再写入文件；</li>
-<li>对于 get 命令解析出 key，交给 <code>get</code> 函数，先从索引中查找，如果有的话根据偏移位置和数据大小，然后直接读取出来并进行反序列化然后返回。</li>
-</ul>
-<p>可以重构一下之前的 <code>get</code>和 <code>set</code>函数：</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">get</span> = (<span class="params">key: string</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> index = map.<span class="title function_">get</span>(key);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (index) &#123;</span><br><span class="line">    <span class="keyword">const</span> [offset, size] = index;</span><br><span class="line">    <span class="keyword">const</span> buffer = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(size);</span><br><span class="line">    fs.<span class="title function_">readSync</span>(fd, buffer, <span class="number">0</span>, size, offset);</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">deserialize</span>(buffer);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">set</span> = (<span class="params">key: string, value: string</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">buffer</span>: <span class="title class_">Buffer</span>;</span><br><span class="line">  <span class="keyword">if</span> (value === <span class="string">&#x27;true&#x27;</span> || value === <span class="string">&#x27;false&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// boolean</span></span><br><span class="line">    buffer = <span class="title function_">serialize</span>(<span class="title class_">JSON</span>.<span class="title function_">parse</span>(value));</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="regexp">/^-?\d+$/</span>.<span class="title function_">test</span>(value)) &#123;</span><br><span class="line">    <span class="comment">// number</span></span><br><span class="line">    buffer = <span class="title function_">serialize</span>(<span class="built_in">parseFloat</span>(value));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    buffer = <span class="title function_">serialize</span>(value);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> size = buffer.<span class="property">byteLength</span>;</span><br><span class="line">  <span class="keyword">const</span> offset = fs.<span class="title function_">statSync</span>(dbFile).<span class="property">size</span>;</span><br><span class="line">  map.<span class="title function_">set</span>(key, [offset, size]);</span><br><span class="line">  fs.<span class="title function_">appendFileSync</span>(dbFile, buffer);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>使用 <code>ts-node main.ts</code>来直接启动并进行测试。</p>
-<p>最后附上完整的代码：</p>
-<ul>
-<li><p>点击展开</p>
-  <figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> repl <span class="keyword">from</span> <span class="string">&#x27;repl&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> fs <span class="keyword">from</span> <span class="string">&#x27;fs&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> path <span class="keyword">from</span> <span class="string">&#x27;path&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> dbFile = <span class="string">&#x27;./data.db&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Offset</span> = <span class="built_in">number</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Size</span> = <span class="built_in">number</span>; <span class="comment">// how many bytes</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Index</span> = [<span class="title class_">Offset</span>, <span class="title class_">Size</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>&lt;<span class="built_in">string</span>, <span class="title class_">Index</span>&gt;();</span><br><span class="line"><span class="keyword">const</span> fd = fs.<span class="title function_">openSync</span>(dbFile, <span class="string">&#x27;a+&#x27;</span>); <span class="comment">// `a+` flag means open file for reading and appending.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">enum</span> <span class="title class_">DataType</span> &#123;</span><br><span class="line">  <span class="title class_">Boolean</span>,</span><br><span class="line">  <span class="title class_">Number</span>,</span><br><span class="line">  <span class="title class_">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 从 db文件中遍历所有行找数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; <span class="variable">key</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">*</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">get</span> = (<span class="params">key: <span class="built_in">string</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> index = map.<span class="title function_">get</span>(key);</span><br><span class="line">  <span class="keyword">if</span> (index) &#123;</span><br><span class="line">    <span class="keyword">const</span> [offset, size] = index;</span><br><span class="line">    <span class="keyword">const</span> buffer = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(size);</span><br><span class="line">    fs.<span class="title function_">readSync</span>(fd, buffer, <span class="number">0</span>, size, offset);</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">deserialize</span>(buffer);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 写数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; <span class="variable">key</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; <span class="variable">value</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">*</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">set</span> = (<span class="params">key: <span class="built_in">string</span>, value: <span class="built_in">string</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">buffer</span>: <span class="title class_">Buffer</span>;</span><br><span class="line">  <span class="keyword">if</span> (value === <span class="string">&#x27;true&#x27;</span> || value === <span class="string">&#x27;false&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// boolean</span></span><br><span class="line">    buffer = <span class="title function_">serialize</span>(<span class="title class_">JSON</span>.<span class="title function_">parse</span>(value));</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="regexp">/^-?\d+$/</span>.<span class="title function_">test</span>(value)) &#123;</span><br><span class="line">    <span class="comment">// number</span></span><br><span class="line">    buffer = <span class="title function_">serialize</span>(<span class="built_in">parseFloat</span>(value));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    buffer = <span class="title function_">serialize</span>(value);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> size = buffer.<span class="property">byteLength</span>;</span><br><span class="line">  <span class="keyword">const</span> offset = fs.<span class="title function_">statSync</span>(dbFile).<span class="property">size</span>;</span><br><span class="line">  map.<span class="title function_">set</span>(key, [offset, size]);</span><br><span class="line">  fs.<span class="title function_">appendFileSync</span>(dbFile, buffer);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 反序列化函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">boolean</span>&#125; <span class="variable">val</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">*</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> deserialize = (<span class="attr">buf</span>: <span class="title class_">Buffer</span>): <span class="built_in">boolean</span> | <span class="built_in">number</span> | <span class="function"><span class="params">string</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">type</span> = buf[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">switch</span> (<span class="keyword">type</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="title class_">DataType</span>.<span class="property">Boolean</span>: &#123;</span><br><span class="line">      <span class="keyword">return</span> buf[<span class="number">1</span>] === <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="title class_">DataType</span>.<span class="property">Number</span>: &#123;</span><br><span class="line">      <span class="keyword">return</span> buf.<span class="title function_">readDoubleBE</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="title class_">DataType</span>.<span class="property">String</span>: &#123;</span><br><span class="line">      <span class="keyword">return</span> buf.<span class="title function_">slice</span>(<span class="number">1</span>).<span class="title function_">toString</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attr">default</span>:</span><br><span class="line">      <span class="keyword">return</span> buf.<span class="title function_">slice</span>(<span class="number">1</span>).<span class="title function_">toString</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 序列化函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">boolean</span>&#125; <span class="variable">val</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">*</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> serialize = (<span class="attr">val</span>: <span class="built_in">boolean</span> | <span class="built_in">number</span> | <span class="built_in">string</span>): <span class="function"><span class="params">Buffer</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">buf</span>: <span class="title class_">Buffer</span>;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">type</span>: <span class="title class_">Buffer</span>;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">data</span>: <span class="title class_">Buffer</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">switch</span> (<span class="keyword">typeof</span> val) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;boolean&#x27;</span>: &#123;</span><br><span class="line">      <span class="keyword">type</span> = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(<span class="number">1</span>, <span class="title class_">DataType</span>.<span class="property">Boolean</span>);</span><br><span class="line">      data = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(<span class="number">1</span>, val ? <span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;number&#x27;</span>: &#123;</span><br><span class="line">      <span class="keyword">type</span> = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(<span class="number">1</span>, <span class="title class_">DataType</span>.<span class="property">Number</span>);</span><br><span class="line">      data = <span class="title class_">Buffer</span>.<span class="title function_">allocUnsafe</span>(<span class="number">8</span>);</span><br><span class="line">      data.<span class="title function_">writeDoubleBE</span>(val);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;string&#x27;</span>: &#123;</span><br><span class="line">      <span class="keyword">type</span> = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(<span class="number">1</span>, <span class="title class_">DataType</span>.<span class="property">String</span>);</span><br><span class="line">      data = <span class="title class_">Buffer</span>.<span class="title function_">from</span>(val);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attr">default</span>: &#123;</span><br><span class="line">      <span class="keyword">type</span> = <span class="title class_">Buffer</span>.<span class="title function_">alloc</span>(<span class="number">1</span>, <span class="title class_">DataType</span>.<span class="property">String</span>);</span><br><span class="line">      data = <span class="title class_">Buffer</span>.<span class="title function_">from</span>(val);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  buf = <span class="title class_">Buffer</span>.<span class="title function_">concat</span>([<span class="keyword">type</span>, data]);</span><br><span class="line">  <span class="keyword">return</span> buf;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 检查DB文件是否存在，不存在则创建</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; <span class="variable">filePath</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">*</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">checkFiles</span> = (<span class="params">filePath: <span class="built_in">string</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> p = path.<span class="title function_">resolve</span>(process.<span class="title function_">cwd</span>(), filePath);</span><br><span class="line">  <span class="keyword">const</span> exist = fs.<span class="title function_">existsSync</span>(p);</span><br><span class="line">  <span class="keyword">if</span> (!exist) &#123;</span><br><span class="line">    fs.<span class="title function_">writeFileSync</span>(p, <span class="string">&quot;&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">repl.<span class="title function_">start</span>(&#123;</span><br><span class="line">  <span class="attr">prompt</span>: <span class="string">&#x27;db.js &gt;&gt; &#x27;</span>,</span><br><span class="line">  <span class="attr">eval</span>: <span class="keyword">async</span> (evalCmd, _context, _file, callback) =&gt; &#123;</span><br><span class="line">    <span class="title function_">checkFiles</span>(dbFile);</span><br><span class="line">    <span class="keyword">const</span> cmd = evalCmd.<span class="title function_">trim</span>();</span><br><span class="line">    <span class="keyword">if</span> (cmd.<span class="title function_">startsWith</span>(<span class="string">&#x27;set&#x27;</span>)) &#123;</span><br><span class="line">      <span class="keyword">const</span> [, key, value] = cmd.<span class="title function_">split</span>(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">      <span class="title function_">set</span>(key, value);</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="literal">null</span>, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (cmd.<span class="title function_">startsWith</span>(<span class="string">&#x27;get&#x27;</span>)) &#123;</span><br><span class="line">      <span class="keyword">const</span> [, key] = cmd.<span class="title function_">split</span>(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">      <span class="keyword">const</span> value = <span class="title function_">get</span>(key);</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="literal">null</span>, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">callback</span>(<span class="literal">null</span>, <span class="string">`Unrecognized command <span class="subst">$&#123;evalCmd&#125;</span>`</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><strong><strong>Build a Simple Database</strong></strong></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hou">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="侯的博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 侯的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/28/%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-06-28 12:58:57 / 修改时间：04:58:22" itemprop="dateCreated datePublished" datetime="2022-06-28T12:58:57+08:00">2022-06-28</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="站在React的角度理解React"><a href="#站在React的角度理解React" class="headerlink" title="站在React的角度理解React"></a>站在React的角度理解React</h1><p>Public: Yes<br>Published: 2022&#x2F;05&#x2F;05<br>Tags: React</p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文基于<a target="_blank" rel="noopener" href="https://www.tangdingblog.cn/blog/react/buildyourownreact-2020-09-22/#renderandcommit">建造属于你的react</a>  这篇文章整理出来React的简单实现过程和一些核心概念，具体的细节和实现过程请参考原文。</p>
-<p>React渲染过程中有两个重要的对象 <code>ReactElement</code> 对象和 <code>fiber</code> 对象</p>
-<ol>
-<li><code>ReactElement</code> 对象</li>
-</ol>
-<p>所有采用<code>jsx</code>语法书写的节点, 都会被编译器转换, 最终会以<code>React.createElement(...)</code>的方式, 创建出来一个与之对应的<code>ReactElement</code>对象。</p>
-<p><code>ReactElement</code>对象可以理解为<code>jsx</code>语法的翻译。</p>
-<ol>
-<li><code>fiber</code> 对象</li>
-</ol>
-<p><code>fiber</code>对象是通过<code>ReactElement</code>对象进行创建的, 多个<code>fiber</code>对象构成了一棵<code>fiber</code>树, <code>fiber</code>树<br>是构造<code>DOM树</code>的数据模型, <code>fiber树</code>的任何改动, 最后都可以体现到<code>DOM</code>上。</p>
-<p>为什么要引入<code>fiber</code>树呢，是因为如果直接用<code>ReactElement</code>对象渲染页面的话，只能一次递归处理完，这样浏览器呈现卡死的状态，但是使用<code>fiber</code>树渲染页面可以随时中断，将控制权交回浏览器，让位给高优先级的任务，浏览器空闲后再恢复渲染。</p>
-<h3 id="ReactElement-对象"><a href="#ReactElement-对象" class="headerlink" title="ReactElement 对象"></a><code>ReactElement</code> 对象</h3><p>jsx 转换为原生 js 需要通过一些诸如<code>babel</code>的编译工具。编译的过程把所有元素标签部分所有内容转换为 <code>React.createElement(...)</code>函数，给函数传递元素标签名，标签上面的属性（prop），以及标签的子节点（children）。</p>
-<p>例如如下的<code>jsx</code>节点：</p>
-<ul>
-<li><p>点击展开</p>
-  <figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> element = (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;id&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;className&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">h3</span> <span class="attr">style</span>=<span class="string">&quot;color: red&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">span</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">header</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">h2</span>&gt;</span>World<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  )</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>最终会被<code>React.createElement(...)</code>转化成如下的一个对象返回：</p>
-<ul>
-<li><p>点击展开</p>
-  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;div&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;props&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;id&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;children&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;div&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;props&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;className&quot;</span><span class="punctuation">:</span> <span class="string">&quot;className&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;children&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;h3&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;props&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;style&quot;</span><span class="punctuation">:</span> <span class="string">&quot;color: red&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;children&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                  <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;span&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;props&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                      <span class="attr">&quot;children&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                        <span class="punctuation">&#123;</span></span><br><span class="line">                          <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;TEXT_ELEMENT&quot;</span><span class="punctuation">,</span></span><br><span class="line">                          <span class="attr">&quot;props&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                            <span class="attr">&quot;nodeValue&quot;</span><span class="punctuation">:</span> <span class="string">&quot;hello&quot;</span><span class="punctuation">,</span></span><br><span class="line">                            <span class="attr">&quot;children&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">                          <span class="punctuation">&#125;</span></span><br><span class="line">                        <span class="punctuation">&#125;</span></span><br><span class="line">                      <span class="punctuation">]</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                  <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">]</span></span><br><span class="line">              <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;header&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;props&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;children&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;h2&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;props&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;children&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                  <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;TEXT_ELEMENT&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;props&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                      <span class="attr">&quot;nodeValue&quot;</span><span class="punctuation">:</span> <span class="string">&quot;World&quot;</span><span class="punctuation">,</span></span><br><span class="line">                      <span class="attr">&quot;children&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                  <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">]</span></span><br><span class="line">              <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="fiber-对象"><a href="#fiber-对象" class="headerlink" title="fiber 对象"></a><code>fiber</code> 对象</h3><p>当 dom tree 很大的情况下，直接用<code>ReactElement</code> 对象渲染页面，页面上会是长时间的卡住状态，无法进行用户输入等交互操作。</p>
-<p>可分为以下步骤解决上述问题：</p>
-<ol>
-<li>允许中断渲染工作，如果有优先级更高的工作插入，则暂时中断浏览器渲染，待完成该工作后，恢复浏览器渲染；</li>
-<li>将渲染工作进行分解，分解成一个个小单元；</li>
-</ol>
-<p>步骤1可以使用浏览器的<code>requestIdleCallback</code>API解决允许中断渲染工作的问题，步骤2就需要引入<code>feiber</code>对象处理了。</p>
-<p>假设需要渲染上述<code>ReactElement</code> 对象，生成的 <code>fiber</code>树如图：</p>
-<p><img src="/%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/Untitled.png" alt="Untitled"></p>
-<p><code>fiber</code> 树的目标是非常容易找到下一个单元工作，这也是为什么每一个 <code>fiber</code> 节点都有指向第一个节点和相邻节点以及父节点的链接。当我们完成在 <code>fiber</code> 上面的工作后，<code>fiber</code> 拥有 <code>child</code> 属性可以直接指向下一个需要进行工作的 <code>fiber</code> 节点。</p>
-<p>当 <code>fiber</code>节点没有<code>child</code>也没兄弟节点时，我们去他们的<em>叔叔</em>（父节点的兄弟节点）节点，如果<code>fiber</code>的父节点也没有兄弟节点，我们继续往上找父节点的兄弟节点直到到根节点。当我们到根节点的时候，也意味着在这一次<code>render</code>我们完成了所有的工作。</p>
-<h3 id="具体的渲染流程"><a href="#具体的渲染流程" class="headerlink" title="具体的渲染流程"></a>具体的渲染流程</h3><p>了解了两个最重要的对象和<code>requestIdleCallback</code>API后，React内部的渲染逻辑可以简单抽象为这样：</p>
-<p><img src="/%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/Untitled%201.png" alt="Untitled"></p>
-<p>按照这个流程其实React第一次渲染时并不快，因为要额外生成fiber树，但是依靠fiber树这个数据结构，React更新是很快的，因为React保留了上次渲染完的fiber树。</p>
-<h3 id="State的简单处理"><a href="#State的简单处理" class="headerlink" title="State的简单处理"></a>State的简单处理</h3><p>可以将State的信息挂在到当前的fiber对象中，这样每次SetState时，重新触发一次<code>workloop</code>就可以了。</p>
-<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>这里只是针对<a target="_blank" rel="noopener" href="https://www.tangdingblog.cn/blog/react/buildyourownreact-2020-09-22/#renderandcommit">建造属于你的react</a>  这篇文章做了简单的总结，具体的实现细节还是建议先把<a target="_blank" rel="noopener" href="https://www.tangdingblog.cn/blog/react/buildyourownreact-2020-09-22/#renderandcommit">建造属于你的react</a>  这篇文章过一遍。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>1 <a target="_blank" rel="noopener" href="https://www.tangdingblog.cn/blog/react/buildyourownreact-2020-09-22/#renderandcommit">建造属于你的react - 唐鼎的个人博客 (tangdingblog.cn)</a></p>
-<p><a href="%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/%E5%BB%BA%E9%80%A0%E5%B1%9E%E4%BA%8E%E4%BD%A0%E7%9A%84react_-_%E5%94%90%E9%BC%8E%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2_(2022_4_29_20_09_06).html">建造属于你的react - 唐鼎的个人博客 (2022_4_29 20_09_06).html</a></p>
-<p>2 <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Xab2Bu9yMPk6I5eeIedxjg">这可能是最通俗的 React Fiber 打开方式 (qq.com)</a></p>
-<p><a href="%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84_React_Fiber_%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F_(2022_4_29_23_24_19).html">这可能是最通俗的 React Fiber 打开方式 (2022_4_29 23_24_19).html</a></p>
-<p>3 <a target="_blank" rel="noopener" href="https://7kms.github.io/react-illustration-series/main/object-structure/">高频对象 - 图解React (7kms.github.io)</a></p>
-<p><a href="%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React%203ea5987fec56456ab773b43975c11559/simple-react.pdf">simple-react.pdf</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -778,7 +301,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/17/%E7%AB%99%E5%9C%A8Vue2%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3Vue2/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/17/%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -796,7 +319,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/17/%E7%AB%99%E5%9C%A8Vue2%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3Vue2/" class="post-title-link" itemprop="url">站在Vue2的角度理解Vue2</a>
+          <a href="/2022/05/17/%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React/" class="post-title-link" itemprop="url">站在React的角度理解React</a>
         </h2>
 
         <div class="post-meta-container">
@@ -808,6 +331,106 @@
       <span class="post-meta-item-text">发表于</span>
 
       <time title="创建时间：2022-05-17 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-17T00:00:00+08:00">2022-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>站在React的角度理解React</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/17/%E7%AB%99%E5%9C%A8React%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3React/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/05/%E7%AB%99%E5%9C%A8Vue2%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3Vue2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hou">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="侯的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 侯的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/05/%E7%AB%99%E5%9C%A8Vue2%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3Vue2/" class="post-title-link" itemprop="url">站在Vue2的角度理解Vue2</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-05 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-05T00:00:00+08:00">2022-05-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -847,7 +470,7 @@
           <p>站在Vue2的角度理解Vue2</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/05/17/%E7%AB%99%E5%9C%A8Vue2%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3Vue2/">
+              <a class="btn" href="/2022/05/05/%E7%AB%99%E5%9C%A8Vue2%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3Vue2/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -878,7 +501,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/18/%E5%9C%A8%20Windows%20Git%20Bash%20%E4%B8%AD%E5%AE%89%E8%A3%85%20Zsh%EF%BC%88%E5%92%8C%20oh-my-zsh%EF%BC%89%20b7132526e402459d912f1f152cd32047/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B02/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -896,7 +519,307 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/18/%E5%9C%A8%20Windows%20Git%20Bash%20%E4%B8%AD%E5%AE%89%E8%A3%85%20Zsh%EF%BC%88%E5%92%8C%20oh-my-zsh%EF%BC%89%20b7132526e402459d912f1f152cd32047/" class="post-title-link" itemprop="url">在 Windows Git Bash 中安装 Zsh</a>
+          <a href="/2022/03/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B02/" class="post-title-link" itemprop="url">添加索引和二进制格式存储</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-16 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-16T00:00:00+08:00">2022-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>添加索引和二进制格式存储</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B02/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hou">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="侯的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 侯的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/09/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B01/" class="post-title-link" itemprop="url">最简单的K-V数据库后端实现</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-09 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-09T00:00:00+08:00">2022-03-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最简单的K-V数据库后端实现</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/09/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B01/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/09/%E4%BB%8E%E7%A5%9E%E7%AD%96%E5%B0%8F%E7%A8%8B%E5%BA%8FSDK%E4%B8%AD%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hou">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="侯的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 侯的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/02/09/%E4%BB%8E%E7%A5%9E%E7%AD%96%E5%B0%8F%E7%A8%8B%E5%BA%8FSDK%E4%B8%AD%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86/" class="post-title-link" itemprop="url">从神策小程序SDK中学习小程序数据收集</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-09 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-09T00:00:00+08:00">2022-02-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" itemprop="url" rel="index"><span itemprop="name">小程序</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>从神策小程序SDK中学习小程序数据收集</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/02/09/%E4%BB%8E%E7%A5%9E%E7%AD%96%E5%B0%8F%E7%A8%8B%E5%BA%8FSDK%E4%B8%AD%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/18/%E5%9C%A8%20Windows%20Git%20Bash%20%E4%B8%AD%E5%AE%89%E8%A3%85%20Zsh%EF%BC%88%E5%92%8C%20oh-my-zsh%EF%BC%89%20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hou">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="侯的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 侯的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/01/18/%E5%9C%A8%20Windows%20Git%20Bash%20%E4%B8%AD%E5%AE%89%E8%A3%85%20Zsh%EF%BC%88%E5%92%8C%20oh-my-zsh%EF%BC%89%20/" class="post-title-link" itemprop="url">在 Windows Git Bash 中安装 Zsh</a>
         </h2>
 
         <div class="post-meta-container">
@@ -947,7 +870,7 @@
           <p>在 Windows Git Bash 中安装 Zsh</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/18/%E5%9C%A8%20Windows%20Git%20Bash%20%E4%B8%AD%E5%AE%89%E8%A3%85%20Zsh%EF%BC%88%E5%92%8C%20oh-my-zsh%EF%BC%89%20b7132526e402459d912f1f152cd32047/">
+              <a class="btn" href="/2022/01/18/%E5%9C%A8%20Windows%20Git%20Bash%20%E4%B8%AD%E5%AE%89%E8%A3%85%20Zsh%EF%BC%88%E5%92%8C%20oh-my-zsh%EF%BC%89%20/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -991,7 +914,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">22k</span>
+    <span title="站点总字数">21k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
