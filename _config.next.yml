@@ -365,16 +365,16 @@ codeblock:
   # Code Highlight theme
   # All available themes: https://theme-next.js.org/highlight/
   theme:
-    light: default
+    light: github
     dark: stackoverflow-dark
   prism:
     light: prism
     dark: prism-dark
   # Add copy button on codeblock
   copy_button:
-    enable: false
+    enable: true
     # Available values: default | flat | mac
-    style:
+    style: mac
 
 back2top:
   enable: true
@@ -683,7 +683,7 @@ baidu_analytics: # <app_id>
 
 # Growingio Analytics
 # See: https://www.growingio.com
-growingio_analytics: # <project_id>
+growingio_analytics: a84bd51b3a583f0f
 
 # Cloudflare Web Analytics
 # See: https://www.cloudflare.com/web-analytics/
