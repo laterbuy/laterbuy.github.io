@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>windows开发环境搭建</title>
+    <url>/2022/06/28/windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h3 id="包管理工具-choco"><a href="#包管理工具-choco" class="headerlink" title="包管理工具 choco"></a>包管理工具 choco</h3><p>powershell中执行 </p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Set-ExecutionPolicy</span> Bypass <span class="literal">-Scope</span> <span class="keyword">Process</span> <span class="literal">-Force</span>; [<span class="type">System.Net.ServicePointManager</span>]::SecurityProtocol = [<span class="type">System.Net.ServicePointManager</span>]::SecurityProtocol <span class="operator">-bor</span> <span class="number">3072</span>; <span class="built_in">iex</span> ((<span class="built_in">New-Object</span> System.Net.WebClient).DownloadString(<span class="string">&#x27;[https://community.chocolatey.org/install.ps1](https://community.chocolatey.org/install.ps1)&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="用包管理工具安装make"><a href="#用包管理工具安装make" class="headerlink" title="用包管理工具安装make"></a>用包管理工具安装make</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">choco install make</span><br></pre></td></tr></table></figure>
+
+<h3 id="notion-host"><a href="#notion-host" class="headerlink" title="notion host"></a>notion host</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="number">119.28</span>.<span class="number">13.121</span> [<span class="type">www.notion.so</span>](http://www.notion.so/)</span><br><span class="line"><span class="number">119.28</span>.<span class="number">13.121</span> [<span class="type">msgstore.www.notion.so</span>](http://msgstore.www.notion.so/)</span><br></pre></td></tr></table></figure>
+
+<h3 id="yarn相关"><a href="#yarn相关" class="headerlink" title="yarn相关"></a>yarn相关</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">// 查看源</span><br><span class="line">yarn config get registry</span><br><span class="line">// 切换源</span><br><span class="line">yarn config <span class="built_in">set</span> registry http://npm.ingageapp.com:<span class="number">32100</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="npm-相关"><a href="#npm-相关" class="headerlink" title="npm 相关"></a>npm 相关</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">// 查看源</span><br><span class="line">npm config get registry</span><br><span class="line">// 切换源</span><br><span class="line">npm config <span class="built_in">set</span> registry http://registry.npmjs.org/</span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmmirror.com</span><br><span class="line">npm install cnpm <span class="literal">-g</span> <span class="literal">--registry</span>=https://registry.npmmirror.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>环境配置</category>
+      </categories>
+      <tags>
+        <tag>环境配置</tag>
+        <tag>windows</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在 Windows Git Bash 中安装 Zsh</title>
-    <url>/2022/01/18/%E5%9C%A8%20Windows%20Git%20Bash%20%E4%B8%AD%E5%AE%89%E8%A3%85%20Zsh%EF%BC%88%E5%92%8C%20oh-my-zsh%EF%BC%89%20/</url>
+    <url>/2022/01/18/%E5%9C%A8%20Windows%20Git%20Bash%E4%B8%AD%E5%AE%89%E8%A3%85Zsh/</url>
     <content><![CDATA[<h3 id="在-Git-Bash-中安装-Zsh"><a href="#在-Git-Bash-中安装-Zsh" class="headerlink" title="在 Git Bash 中安装 Zsh"></a>在 Git Bash 中安装 Zsh</h3><ol>
 <li>从 MSYS2 软件包存储库 下载最新的<a href="https://packages.msys2.org/package/zsh?repo=msys&variant=x86_64">MSYS2</a>zsh 软件包。该文件将被命名为 类似于 .<code>zsh-5.8-5-x86_64.pkg.tar.zst</code></li>
 <li>解压下载文件到 Git Bash 安装目录中 <code>C:\Program Files\Git</code></li>
@@ -60,64 +85,6 @@
       <tags>
         <tag>环境配置</tag>
         <tag>windows</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>windows开发环境搭建</title>
-    <url>/2022/06/28/windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h3 id="包管理工具-choco"><a href="#包管理工具-choco" class="headerlink" title="包管理工具 choco"></a>包管理工具 choco</h3><p>powershell中执行 </p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Set-ExecutionPolicy</span> Bypass <span class="literal">-Scope</span> <span class="keyword">Process</span> <span class="literal">-Force</span>; [<span class="type">System.Net.ServicePointManager</span>]::SecurityProtocol = [<span class="type">System.Net.ServicePointManager</span>]::SecurityProtocol <span class="operator">-bor</span> <span class="number">3072</span>; <span class="built_in">iex</span> ((<span class="built_in">New-Object</span> System.Net.WebClient).DownloadString(<span class="string">&#x27;[https://community.chocolatey.org/install.ps1](https://community.chocolatey.org/install.ps1)&#x27;</span>))</span><br></pre></td></tr></table></figure>
-
-<h3 id="用包管理工具安装make"><a href="#用包管理工具安装make" class="headerlink" title="用包管理工具安装make"></a>用包管理工具安装make</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">choco install make</span><br></pre></td></tr></table></figure>
-
-<h3 id="notion-host"><a href="#notion-host" class="headerlink" title="notion host"></a>notion host</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="number">119.28</span>.<span class="number">13.121</span> [<span class="type">www.notion.so</span>](http://www.notion.so/)</span><br><span class="line"><span class="number">119.28</span>.<span class="number">13.121</span> [<span class="type">msgstore.www.notion.so</span>](http://msgstore.www.notion.so/)</span><br></pre></td></tr></table></figure>
-
-<h3 id="yarn相关"><a href="#yarn相关" class="headerlink" title="yarn相关"></a>yarn相关</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">// 查看源</span><br><span class="line">yarn config get registry</span><br><span class="line">// 切换源</span><br><span class="line">yarn config <span class="built_in">set</span> registry http://npm.ingageapp.com:<span class="number">32100</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="npm-相关"><a href="#npm-相关" class="headerlink" title="npm 相关"></a>npm 相关</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">// 查看源</span><br><span class="line">npm config get registry</span><br><span class="line">// 切换源</span><br><span class="line">npm config <span class="built_in">set</span> registry http://registry.npmjs.org/</span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmmirror.com</span><br><span class="line">npm install cnpm <span class="literal">-g</span> <span class="literal">--registry</span>=https://registry.npmmirror.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>环境配置</category>
-      </categories>
-      <tags>
-        <tag>环境配置</tag>
-        <tag>windows</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>从神策小程序SDK中学习小程序数据收集</title>
-    <url>/2022/02/09/%E4%BB%8E%E7%A5%9E%E7%AD%96%E5%B0%8F%E7%A8%8B%E5%BA%8FSDK%E4%B8%AD%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>业务需求，需要收集用户在小程序端的特定行为（页面浏览时长，点击行为等）。</p>
-<h3 id="初始实现"><a href="#初始实现" class="headerlink" title="初始实现"></a>初始实现</h3><p>刚开始是根据业务需求，在小程序端特定页面或者特定的事件上添加函数处理，重复代码多，每次修改很麻烦。</p>
-<h3 id="神策的实现"><a href="#神策的实现" class="headerlink" title="神策的实现"></a>神策的实现</h3><p>在同事的帮助下看了神策收集数据的方式，将小程序特定行为数据的收集写成可配置的，大大减少了重复代码，提高了代码可维护性。</p>
-<h3 id="神策SDK中的简单实现"><a href="#神策SDK中的简单实现" class="headerlink" title="神策SDK中的简单实现"></a>神策SDK中的简单实现</h3><p>小程序根据组件级别可以分为App、Page和Component。</p>
-<ol>
-<li>App</li>
-</ol>
-<p>监听App的显示和隐藏比较简单，小程序有提供专门的API</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 小程序显示</span></span><br><span class="line">wx.<span class="title function_">onAppShow</span>(<span class="keyword">function</span> (<span class="params">para</span>) &#123;</span><br><span class="line">  <span class="comment">// 获取小程序启动时的参数。与 App.onLaunch 的回调参数一致</span></span><br><span class="line">  <span class="keyword">const</span> option = wx.<span class="title function_">getLaunchOptionsSync</span>();</span><br><span class="line">  <span class="comment">// 处理逻辑</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 小程序隐藏</span></span><br><span class="line">wx.<span class="title function_">onAppHide</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 处理逻辑</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>Page</li>
-</ol>
-<p>在app.js中，App.onLaunch 中重写下Page，以记录进入每个页面的浏览时长为例：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> pageEnterTime;</span><br><span class="line"><span class="title class_">App</span>(&#123;</span><br><span class="line">  <span class="attr">onLaunch</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> oldPage = <span class="title class_">Page</span></span><br><span class="line">    <span class="title class_">Page</span> = <span class="keyword">function</span> (<span class="params">obj</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> oldOnLoad = obj.<span class="property">onLoad</span></span><br><span class="line">      <span class="comment">// 进入页面</span></span><br><span class="line">      obj.<span class="property">onLoad</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageEnterTime = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">        oldOnLoad &amp;&amp; oldOnLoad.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">const</span> oldOnHide = obj.<span class="property">onHide</span></span><br><span class="line">      <span class="comment">// 页面跳转</span></span><br><span class="line">      obj.<span class="property">onHide</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageStayTime = <span class="title class_">Date</span>.<span class="title function_">now</span>() - pageEnterTime;</span><br><span class="line">        <span class="comment">// 记录时间</span></span><br><span class="line">        oldOnHide &amp;&amp; oldOnHide.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> oldOnUnload = obj.<span class="property">onUnload</span></span><br><span class="line">      <span class="comment">// 返回按钮</span></span><br><span class="line">      obj.<span class="property">onUnload</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageStayTime = <span class="title class_">Date</span>.<span class="title function_">now</span>() - pageEnterTime</span><br><span class="line">        <span class="comment">// 记录时间</span></span><br><span class="line">        oldOnUnload &amp;&amp; oldOnUnload.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="title function_">oldPage</span>(obj);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>其他的点击事件或者页面事件类似，都可以写成这种可配置的方式</p>
-<ol>
-<li>Component</li>
-</ol>
-<p>Component和Page类似，在App.onLaunch 中重写下Component，然后处理Component事件或者点击事件</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://github.com/sensorsdata/sa-sdk-miniprogram/blob/master/product/sensorsdata.full.js">sa-sdk-miniprogram</a></p>
-]]></content>
-      <categories>
-        <category>小程序</category>
-      </categories>
-      <tags>
-        <tag>小程序</tag>
       </tags>
   </entry>
   <entry>
@@ -212,6 +179,39 @@
       <tags>
         <tag>数据库</tag>
         <tag>数据库的简单实现2</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>从神策小程序SDK中学习小程序数据收集</title>
+    <url>/2022/02/09/%E4%BB%8E%E7%A5%9E%E7%AD%96%E5%B0%8F%E7%A8%8B%E5%BA%8FSDK%E4%B8%AD%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>业务需求，需要收集用户在小程序端的特定行为（页面浏览时长，点击行为等）。</p>
+<h3 id="初始实现"><a href="#初始实现" class="headerlink" title="初始实现"></a>初始实现</h3><p>刚开始是根据业务需求，在小程序端特定页面或者特定的事件上添加函数处理，重复代码多，每次修改很麻烦。</p>
+<h3 id="神策的实现"><a href="#神策的实现" class="headerlink" title="神策的实现"></a>神策的实现</h3><p>在同事的帮助下看了神策收集数据的方式，将小程序特定行为数据的收集写成可配置的，大大减少了重复代码，提高了代码可维护性。</p>
+<h3 id="神策SDK中的简单实现"><a href="#神策SDK中的简单实现" class="headerlink" title="神策SDK中的简单实现"></a>神策SDK中的简单实现</h3><p>小程序根据组件级别可以分为App、Page和Component。</p>
+<ol>
+<li>App</li>
+</ol>
+<p>监听App的显示和隐藏比较简单，小程序有提供专门的API</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 小程序显示</span></span><br><span class="line">wx.<span class="title function_">onAppShow</span>(<span class="keyword">function</span> (<span class="params">para</span>) &#123;</span><br><span class="line">  <span class="comment">// 获取小程序启动时的参数。与 App.onLaunch 的回调参数一致</span></span><br><span class="line">  <span class="keyword">const</span> option = wx.<span class="title function_">getLaunchOptionsSync</span>();</span><br><span class="line">  <span class="comment">// 处理逻辑</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 小程序隐藏</span></span><br><span class="line">wx.<span class="title function_">onAppHide</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 处理逻辑</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>Page</li>
+</ol>
+<p>在app.js中，App.onLaunch 中重写下Page，以记录进入每个页面的浏览时长为例：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> pageEnterTime;</span><br><span class="line"><span class="title class_">App</span>(&#123;</span><br><span class="line">  <span class="attr">onLaunch</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> oldPage = <span class="title class_">Page</span></span><br><span class="line">    <span class="title class_">Page</span> = <span class="keyword">function</span> (<span class="params">obj</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> oldOnLoad = obj.<span class="property">onLoad</span></span><br><span class="line">      <span class="comment">// 进入页面</span></span><br><span class="line">      obj.<span class="property">onLoad</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageEnterTime = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">        oldOnLoad &amp;&amp; oldOnLoad.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">const</span> oldOnHide = obj.<span class="property">onHide</span></span><br><span class="line">      <span class="comment">// 页面跳转</span></span><br><span class="line">      obj.<span class="property">onHide</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageStayTime = <span class="title class_">Date</span>.<span class="title function_">now</span>() - pageEnterTime;</span><br><span class="line">        <span class="comment">// 记录时间</span></span><br><span class="line">        oldOnHide &amp;&amp; oldOnHide.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> oldOnUnload = obj.<span class="property">onUnload</span></span><br><span class="line">      <span class="comment">// 返回按钮</span></span><br><span class="line">      obj.<span class="property">onUnload</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageStayTime = <span class="title class_">Date</span>.<span class="title function_">now</span>() - pageEnterTime</span><br><span class="line">        <span class="comment">// 记录时间</span></span><br><span class="line">        oldOnUnload &amp;&amp; oldOnUnload.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="title function_">oldPage</span>(obj);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>其他的点击事件或者页面事件类似，都可以写成这种可配置的方式</p>
+<ol>
+<li>Component</li>
+</ol>
+<p>Component和Page类似，在App.onLaunch 中重写下Component，然后处理Component事件或者点击事件</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://github.com/sensorsdata/sa-sdk-miniprogram/blob/master/product/sensorsdata.full.js">sa-sdk-miniprogram</a></p>
+]]></content>
+      <categories>
+        <category>小程序</category>
+      </categories>
+      <tags>
+        <tag>小程序</tag>
       </tags>
   </entry>
   <entry>
