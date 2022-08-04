@@ -54,6 +54,8 @@ navbar:
       url: /
     - name: 标签
       url: /tags/
+    - name: 分类
+      url: /category/
     - name: 归档
       url: /archives/
     # - name: Page
@@ -85,8 +87,8 @@ style:
 
   # 颜色配置
   color: 
-    main_color: '#6200ee'
-    main_color_dark: '#bb86fc'
+    main_color: '#002523'
+    main_color_dark: '#b2b6c7'
 
   # 弧度设置
   radius: 
@@ -101,10 +103,10 @@ style:
   highlight: 
 
     # 默认代码高亮主题
-    default: 
+    default: atom-one-light
 
     # 暗色代码高亮主题
-    darkmode: 
+    darkmode: atom-one-dark
 
   # highlight.js 代码高亮
   hljs: 
