@@ -1,18 +1,18 @@
 ---
-title: 最简单的K-V数据库后端实现
+title: 最简单的K-V数据库后端实现（数据库的简单实现1）
 description: 最简单的K-V数据库后端实现
 date: 2022/03/09
 updated: 2022/03/09
 tags:
   - 数据库
-  - 数据库的简单实现2
+  - 数据库的简单实现
 categories:
   - 数据库
 ---
 
 这里将用TypeScript开始实现一个最简单的 Key-Value 数据库，以理解数据库是怎么工作的。
 
-### ****建立 REPL 环境****
+### 建立 REPL 环境
 
 首先要建立建立 REPL 环境，这样就可以在终端输入语句，然后查看输出，并不断进行这个循环直到停止使用。
 
@@ -121,81 +121,81 @@ db.js >> get a
 
 虽然用 Node.js 来实现肯定不会有太好的性能，但这个学习过程中会像设计一个真正的数据库一样去思考。在 Node 中可以利用 `[Buffer](https://nodejs.org/api/buffer.html#buffer)` 来实现对二进制数据进行操作，因此后续会将文本格式改为二进制格式。
 
-- 最后附上完整的代码：
+最后附上完整的代码：
 
-    ```tsx
-    import * as repl from "repl";
-    import * as fs from "fs";
-    import * as readline from "readline";
-    import * as path from "path";
-    
-    const dbFile = "./data.db";
-    
-    /**
-     * @description: 从 db文件中遍历所有行找数据
-     * @param {string} key
-     * @return {*}
-     */
-    const get = (key: string) => {
-      const readable = fs.createReadStream(dbFile);
-      const reader = readline.createInterface({ input: readable });
-      return new Promise<string>((resolve) => {
-        let value: string;
-        reader.on("line", (line: string) => {
-          const [k, v] = line.split(",");
-          if (k === key) {
-            value = v;
-          }
-        });
-        readable.on("end", () => {
-          reader.close();
-          resolve(value);
-        });
-      });
-    };
-    
-    /**
-     * @description: 写数据
-     * @param {string} key
-     * @param {string} value
-     * @return {*}
-     */
-    const set = (key: string, value: string) => {
-      fs.appendFileSync(dbFile, `${key},${value}\n`);
-    };
-    
-    /**
-     * @description: 检查DB文件是否存在，不存在则创建
-     * @param {string} filePath
-     * @return {*}
-     */
-    const checkFiles = (filePath: string) => {
-      const p = path.resolve(process.cwd(), filePath);
-      const exist = fs.existsSync(p);
-      if (!exist) {
-        fs.writeFileSync(p, "");
+```tsx
+import * as repl from "repl";
+import * as fs from "fs";
+import * as readline from "readline";
+import * as path from "path";
+
+const dbFile = "./data.db";
+
+/**
+ * @description: 从 db文件中遍历所有行找数据
+ * @param {string} key
+ * @return {*}
+ */
+const get = (key: string) => {
+  const readable = fs.createReadStream(dbFile);
+  const reader = readline.createInterface({ input: readable });
+  return new Promise<string>((resolve) => {
+    let value: string;
+    reader.on("line", (line: string) => {
+      const [k, v] = line.split(",");
+      if (k === key) {
+        value = v;
       }
-    };
-    
-    repl.start({
-      prompt: "db.js >> ",
-      eval: async (evalCmd, _context, _file, callback) => {
-        checkFiles(dbFile);
-        const cmd = evalCmd.trim();
-        if (cmd.startsWith("set")) {
-          const [, key, value] = cmd.split(" ");
-          set(key, value);
-          return callback(null, value);
-        }
-        if (cmd.startsWith("get")) {
-          const [, key] = cmd.split(" ");
-          const value = await get(key);
-          return callback(null, value);
-        }
-        return callback(null, `Unrecognized command ${evalCmd}`);
-      },
     });
-    ```
+    readable.on("end", () => {
+      reader.close();
+      resolve(value);
+    });
+  });
+};
+
+/**
+ * @description: 写数据
+ * @param {string} key
+ * @param {string} value
+ * @return {*}
+ */
+const set = (key: string, value: string) => {
+  fs.appendFileSync(dbFile, `${key},${value}\n`);
+};
+
+/**
+ * @description: 检查DB文件是否存在，不存在则创建
+ * @param {string} filePath
+ * @return {*}
+ */
+const checkFiles = (filePath: string) => {
+  const p = path.resolve(process.cwd(), filePath);
+  const exist = fs.existsSync(p);
+  if (!exist) {
+    fs.writeFileSync(p, "");
+  }
+};
+
+repl.start({
+  prompt: "db.js >> ",
+  eval: async (evalCmd, _context, _file, callback) => {
+    checkFiles(dbFile);
+    const cmd = evalCmd.trim();
+    if (cmd.startsWith("set")) {
+      const [, key, value] = cmd.split(" ");
+      set(key, value);
+      return callback(null, value);
+    }
+    if (cmd.startsWith("get")) {
+      const [, key] = cmd.split(" ");
+      const value = await get(key);
+      return callback(null, value);
+    }
+    return callback(null, `Unrecognized command ${evalCmd}`);
+  },
+});
+```
 
 
 ### 参考
