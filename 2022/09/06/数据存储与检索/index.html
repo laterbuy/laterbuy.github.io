@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    
+    
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x132.png">
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>later的博客</title>
+
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="数据存储与检索Created: August 24, 2022 8:49 PMTags: 文档 数据存储与检索背景数据处理大致可以分成两大类：联机事务处理OLTP（on-line transaction processing）、联机分析处理OLAP（On-Line Analytical Processing）。OLTP是传统的关系型数据库的主要应用，主要是基本的、日常的事务处理，例如银行交易。OL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="later的博客">
+<meta property="og:url" content="http://example.com/2022/09/06/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2/index.html">
+<meta property="og:site_name" content="later的博客">
+<meta property="og:description" content="数据存储与检索Created: August 24, 2022 8:49 PMTags: 文档 数据存储与检索背景数据处理大致可以分成两大类：联机事务处理OLTP（on-line transaction processing）、联机分析处理OLAP（On-Line Analytical Processing）。OLTP是传统的关系型数据库的主要应用，主要是基本的、日常的事务处理，例如银行交易。OL">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-06T03:39:23.613Z">
+<meta property="article:modified_time" content="2022-09-06T03:40:06.650Z">
+<meta property="article:author" content="Hou">
+<meta name="twitter:card" content="summary_large_image">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/atom-one-light.css" media="none" >
+        
+            <link rel="stylesheet" id="hl-dark-theme" href="/css/highlight/atom-one-dark.css" media="none">
+        
+    
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/style/dark.css">
+
+    
+<script src="/js/darkmode.js"></script>
+
+
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+    <body>
+        <div id="app" tabindex="-1">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">later的博客</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/category/" class="navbar-menu button">分类</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+            </div>
+        
+        
+        
+    <a href="/search/" id="btn-search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="32"><path d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z"></path></svg>
+    </a>
+
+
+        
+        
+    <a href="javaScript:void(0);" id="btn-toggle-dark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/category/" class="dropdown-menu button">分类</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2022/09/" class="post-meta__date button">2022-09-06</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2%E8%83%8C%E6%99%AF"><span class="toc-text">数据存储与检索背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OLTP"><span class="toc-text">OLTP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E9%A1%B5%EF%BC%88b-tree%EF%BC%89%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-text">基于页（b+tree）的存储引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%AE%BA"><span class="toc-text">理论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-text">实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%97%A5%E5%BF%97%E7%BB%93%E6%9E%84%E5%AD%98%E5%82%A8%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-text">基于日志结构存储的存储引擎</span></a></li></ol></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">文章目录</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E6%A3%80%E7%B4%A2%E8%83%8C%E6%99%AF"><span class="toc-text">数据存储与检索背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OLTP"><span class="toc-text">OLTP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E9%A1%B5%EF%BC%88b-tree%EF%BC%89%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-text">基于页（b+tree）的存储引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%AE%BA"><span class="toc-text">理论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-text">实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%97%A5%E5%BF%97%E7%BB%93%E6%9E%84%E5%AD%98%E5%82%A8%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="toc-text">基于日志结构存储的存储引擎</span></a></li></ol></li></ol>
+    </div>
+
+
+<article class="post post__with-toc content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h1 id="数据存储与检索"><a href="#数据存储与检索" class="headerlink" title="数据存储与检索"></a>数据存储与检索</h1><p>Created: August 24, 2022 8:49 PM<br>Tags: 文档</p>
+<h2 id="数据存储与检索背景"><a href="#数据存储与检索背景" class="headerlink" title="数据存储与检索背景"></a>数据存储与检索背景</h2><p>数据处理大致可以分成两大类：联机事务处理OLTP（on-line transaction processing）、联机分析处理OLAP（On-Line Analytical Processing）。OLTP是传统的关系型数据库<br>的主要应用，主要是基本的、日常的事务处理，例如银行交易。OLAP是数据仓库系统的主要应用，支持复杂的分析操作，侧重决策支持，并且提供直观易懂的查询结果。</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>OLTP(online transaction processing)</th>
+<th>OLAP(online analysis processing)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统功能</td>
+<td>日常交易处理&#x2F;在线失误处理</td>
+<td>统计、分析、报表&#x2F;在线分析处理</td>
+</tr>
+<tr>
+<td>设计目标</td>
+<td>面向实时交易类应用</td>
+<td>面向统计分析类应用</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>当前的、最新的</td>
+<td>历史的、聚集的</td>
+</tr>
+<tr>
+<td>实时性</td>
+<td>实时性读写要求高</td>
+<td>实时性读写要求低</td>
+</tr>
+<tr>
+<td>事务</td>
+<td>强事务</td>
+<td>弱事务</td>
+</tr>
+<tr>
+<td>分析要求</td>
+<td>低、简单</td>
+<td>高、复杂</td>
+</tr>
+</tbody></table>
+<h2 id="OLTP"><a href="#OLTP" class="headerlink" title="OLTP"></a>OLTP</h2><p>大多数OLTP系统中，数据存储都是以面向行(row-oriented)的方式组织的。这种方式把一行数据存放在一起。在OLAP系统中，查询语句一般是获取大量行数据中的特定某几列。</p>
+<p>OLTP的存储引擎分为<strong>面向页（b+tree）存储引擎</strong>和<strong>日志结构（lsm tree）存储引擎</strong></p>
+<h2 id="基于页（b-tree）的存储引擎"><a href="#基于页（b-tree）的存储引擎" class="headerlink" title="基于页（b+tree）的存储引擎"></a>基于<strong>页（b+tree）</strong>的存储引擎</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>对于数据存储这个场景来说，数据量一般大到无法放进机器的内存中，是需要放在磁盘上的，因此必须要有一个基于磁盘的数据结构，我们一次只加载一小点进来用于缓存或者比较，而绝大部分的数据都继续放在磁盘上。</p>
+<p>需要设计一个基于磁盘的数据结构，势必要求对硬件有一定的了解的，事实上硬件也确实会很大程度上影响到软件的设计，绝大多数老牌数据库的设计都受到当时主流的机械硬盘设计的影响。</p>
+<p><strong>机械硬盘读写数据的时间：寻道时间+旋转时间+传输时间：</strong></p>
+<p>寻道时间：8ms~12ms</p>
+<p>旋转时间：7200转&#x2F;min：半周4ms</p>
+<p>传输时间：50M&#x2F;s，约0.3ms</p>
+<p><strong>机械硬盘最小的读写单位是一个扇区(Sector)，一般大概是在 512 bytes 到 4kb 之间。</strong></p>
+<h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><p>限制：</p>
+<ol>
+<li>每次针对磁盘的读写操作都基于一小块，而不是单独的一个字节</li>
+<li>每次读写一块内容都比较慢</li>
+</ol>
+<p>数据结构设计，直接抛结论： <strong>B+ 树</strong>。</p>
+<p><strong>B+ 树</strong>是一种树数据结构，通常用于数据库和操作系统的文件系统中。B+ 树的特点是能够保持数据稳定有序，其插入与修改拥有较稳定的对数时间复杂度。</p>
+<p><strong>B+树节点结构</strong></p>
+<p>在B+树中的节点通常被表示为一组有序的元素和子指针。如果此B+树的阶数是m，则除了根之外的每个节点都包含最少 m&#x2F;2  个元素最多   m−1个元素，对于任意的结点有最多 m 个子指针。对于所有内部节点，子指针的数目总是比元素的数目多一个。所有叶子都在相同的高度上，叶结点本身按关键字大小从小到大链接。</p>
+<p><strong>数据结构中的B+树</strong></p>
+
+
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>基于b+树的存储引擎</p>
+<p>为什么是b+树</p>
+<p>背景</p>
+<ol>
+<li><p>读多写少的场景</p>
+</li>
+<li><p>数据按行组织</p>
+</li>
+<li><p>存储千万条数据</p>
+</li>
+<li><p>高性价比存储 （存储介质成本低、容量大）</p>
+</li>
+<li><p>磁盘访问时间：寻道时间+旋转时间+传输时间</p>
+</li>
+</ol>
+<p>寻道时间： 8ms-12ms</p>
+<p>旋转时间：7200转&#x2F;min 一周8.3ms 半周4ms</p>
+<p>传输时间：50M&#x2F;s  约0.3ms</p>
+<ol>
+<li>磁盘随机IO &lt;&lt;磁盘顺序IO &#x3D;&#x3D;内存随机IO&lt;&lt;内存顺序IO</li>
+</ol>
+<p> 以操作系统的页大小为基本块单位  4k</p>
+<p>机械硬盘有点类似唱片机一样的有着圆形盘片和读写头，在读写数据时需要让读写头先找到特定的位置，这个叫寻道，然后才能开始读写数据，也就是说随机访问会存在一定的成本，但接下来的顺序读写会相对很快。机械硬盘最小的读写单位是一个 Sector，一般大概是在 512 bytes 到 4kb 之间。</p>
+<p>而固态硬盘（SSD）就没有这样的物理结构，它使用闪存芯片来作为存储单元，而闪存会分为固定的区块为单位进行管理：</p>
+<p>其中最小可写入的区块是一个 Page，一般在 2- 16 kb 之间，而最小可以擦除的区块，是一个 Block，一个 Block 可能会包含 64 到 512 个 Page。</p>
+<p>对于这二者来说，有一个共同点就是我们的读写操作每次都是需要基于一小块内容的，而不是单独的一个个字节。 因此设计针对磁盘的数据结构时，我们最好利用这个特点，也像磁盘的设计一样，去读写固定一小块完整的内容，而不是任意字节大小的内容，这一块内容里可以包含一个指针，告诉我们下一次需要读取的内容在哪个位置，然后再到那个位置再把一整块内容读取进来。</p>
+<p>b+树特征</p>
+<ol>
+<li>最底层的页保存记录完整数据，每页保存多条数据</li>
+<li>中间页保存索引信息（页编号、该页存储的最小记录）</li>
+</ol>
+<p>结论</p>
+<p>内存和磁盘都可以维护的数据结构：b+树，</p>
+<p>核心原因</p>
+<p>树高度低，每次磁盘IO相对较少，不同请求时间复杂度比较平均</p>
+<h3 id="基于日志结构存储的存储引擎"><a href="#基于日志结构存储的存储引擎" class="headerlink" title="基于日志结构存储的存储引擎"></a>基于日志结构存储的存储引擎</h3>
+    </div>
+     
+    <div class="post-footer__meta"><p>更新于 2022-09-06</p></div> 
+    <div class="post-entry__tags"></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2022/07/28/%E7%BB%99%E7%8E%B0%E6%9C%89%E7%9A%84%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E6%96%87%E6%A1%A3%E5%B7%A5%E5%85%B7/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            下一篇
+                        </div>
+                        <div class="nav__title">
+                            给现有的项目中添加一个文档工具
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+     
+    <a href="#" class="button" id="b2t" aria-label="回到顶部" title="回到顶部">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2022&nbsp;-&nbsp;2022 <a href="/">later的博客</a>
+        </p>
+    
+    
+    <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p> -->
+</footer>
+
+        </div>
+        
+    <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+    <script>
+        window.lazyLoadOptions = {
+            elements_selector: ".lazy",
+            threshold: 0
+        };
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('true'),
+            auto_fancybox = Boolean('false')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+    </body>
+</html>
