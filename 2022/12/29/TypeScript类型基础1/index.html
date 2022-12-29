@@ -31,24 +31,28 @@
     <!-- meta -->
 
 
-<title>later的博客</title>
+<title>TypeScript类型基础1 | later的博客</title>
 
+
+    <meta name="keywords" content="typescript, 前端">
 
 
 
 
     <!-- OpenGraph -->
  
-    <meta name="description" content="title: TypeScript类型基础1description: TypeScript类型基础1date: 2022&#x2F;12&#x2F;29updated: 2022&#x2F;12&#x2F;29tags:  typescript 前端categories: typescript   如何类型檫除 esbuild (快 不检查ts语法)  12npm i -g esbuildesb">
+    <meta name="description" content="TypeScript类型基础1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="later的博客">
+<meta property="og:title" content="TypeScript类型基础1">
 <meta property="og:url" content="http://example.com/2022/12/29/TypeScript%E7%B1%BB%E5%9E%8B%E5%9F%BA%E7%A1%801/index.html">
 <meta property="og:site_name" content="later的博客">
-<meta property="og:description" content="title: TypeScript类型基础1description: TypeScript类型基础1date: 2022&#x2F;12&#x2F;29updated: 2022&#x2F;12&#x2F;29tags:  typescript 前端categories: typescript   如何类型檫除 esbuild (快 不检查ts语法)  12npm i -g esbuildesb">
+<meta property="og:description" content="TypeScript类型基础1">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-12-29T11:35:48.798Z">
-<meta property="article:modified_time" content="2022-12-29T11:36:30.783Z">
+<meta property="article:published_time" content="2022-12-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-12-28T16:00:00.000Z">
 <meta property="article:author" content="Hou">
+<meta property="article:tag" content="typescript">
+<meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary_large_image">
 
 
@@ -141,11 +145,13 @@
 
 <div class="post-title">
     <h1 class="post-title__text">
-        
+        TypeScript类型基础1
     </h1>
     <div class="post-title__meta">
         <a href="/archives/2022/12/" class="post-meta__date button">2022-12-29</a>
         
+    <span class="separate-dot"></span><a href="/categories/typescript/" class="button">typescript</a>
+
  
         
     
@@ -161,7 +167,7 @@
 
     <aside class="post-side">
         <div class="post-side__toc">
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%B1%BB%E5%9E%8B%E6%AA%AB%E9%99%A4"><span class="toc-text">如何类型檫除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E8%A3%85%E5%AF%B9%E8%B1%A1"><span class="toc-text">包装对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1"><span class="toc-text">描述函数对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#any-amp-unknown"><span class="toc-text">any&amp;unknown</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%BD%8D%E6%93%8D%E4%BD%9C"><span class="toc-text">枚举和位操作</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%B1%BB%E5%9E%8B%E6%AA%AB%E9%99%A4"><span class="toc-text">如何类型檫除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8-%E5%92%8CArray%E6%B3%9B%E5%9E%8B%E6%8F%8F%E8%BF%B0%E6%95%B0%E7%BB%84"><span class="toc-text">用 [] 和Array泛型描述数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1"><span class="toc-text">描述函数对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#any-amp-unknown"><span class="toc-text">any&amp;unknown</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%BD%8D%E6%93%8D%E4%BD%9C"><span class="toc-text">枚举和位操作</span></a></li></ol>
         </div>
     </aside>
     <a class="btn-toc button" id="btn-toc" tabindex="0">
@@ -171,22 +177,14 @@
     </a>
     <div class="toc-menus" id="toc-menus">
         <div class="toc-title">文章目录</div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%B1%BB%E5%9E%8B%E6%AA%AB%E9%99%A4"><span class="toc-text">如何类型檫除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E8%A3%85%E5%AF%B9%E8%B1%A1"><span class="toc-text">包装对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1"><span class="toc-text">描述函数对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#any-amp-unknown"><span class="toc-text">any&amp;unknown</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%BD%8D%E6%93%8D%E4%BD%9C"><span class="toc-text">枚举和位操作</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%B1%BB%E5%9E%8B%E6%AA%AB%E9%99%A4"><span class="toc-text">如何类型檫除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8-%E5%92%8CArray%E6%B3%9B%E5%9E%8B%E6%8F%8F%E8%BF%B0%E6%95%B0%E7%BB%84"><span class="toc-text">用 [] 和Array泛型描述数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1"><span class="toc-text">描述函数对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#any-amp-unknown"><span class="toc-text">any&amp;unknown</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%92%8C%E4%BD%8D%E6%93%8D%E4%BD%9C"><span class="toc-text">枚举和位操作</span></a></li></ol>
     </div>
 
 
 <article class="post post__with-toc content-card">
     <div class="post__header"></div>
     <div class="post__content">
-        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><hr>
-<p>title: TypeScript类型基础1<br>description: TypeScript类型基础1<br>date: 2022&#x2F;12&#x2F;29<br>updated: 2022&#x2F;12&#x2F;29<br>tags:</p>
-<ul>
-<li>typescript</li>
-<li>前端<br>categories:</li>
-<li>typescript</li>
-</ul>
-<hr>
-<h3 id="如何类型檫除"><a href="#如何类型檫除" class="headerlink" title="如何类型檫除"></a>如何类型檫除</h3><ol>
+        <h3 id="如何类型檫除"><a href="#如何类型檫除" class="headerlink" title="如何类型檫除"></a>如何类型檫除</h3><ol>
 <li>esbuild (快 不检查ts语法)</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i -g esbuild</span><br><span class="line">esbuild 1.ts &gt; 1.js</span><br></pre></td></tr></table></figure>
@@ -211,7 +209,7 @@
 <h1 id="用类型签名和Record描述对象"><a href="#用类型签名和Record描述对象" class="headerlink" title="用类型签名和Record描述对象"></a>用类型签名和Record描述对象</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> A = &#123;</span><br><span class="line">  [<span class="attr">k</span>: <span class="built_in">string</span>]: <span class="built_in">number</span> <span class="comment">//  索引签名</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">A1</span> = <span class="title class_">Record</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt; <span class="comment">// 泛型</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">a</span>: <span class="title class_">Object</span> = <span class="number">1</span>;  <span class="comment">// 包装对象的原因导致这里不报错</span></span><br></pre></td></tr></table></figure>
 
 <p>由于Object太不精确，ts一般使用索引签名和Record泛型描述普通对象。</p>
-<h3 id="包装对象"><a href="#包装对象" class="headerlink" title="包装对象"></a>包装对象</h3><h1 id="用-和Array泛型描述数组"><a href="#用-和Array泛型描述数组" class="headerlink" title="用 [] 和Array泛型描述数组"></a>用 [] 和Array泛型描述数组</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> A = <span class="built_in">string</span>[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">A1</span> = <span class="title class_">Array</span>&lt;<span class="built_in">string</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">A2</span> = [<span class="built_in">string</span> <span class="built_in">string</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="用-和Array泛型描述数组"><a href="#用-和Array泛型描述数组" class="headerlink" title="用 [] 和Array泛型描述数组"></a>用 [] 和Array泛型描述数组</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> A = <span class="built_in">string</span>[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">A1</span> = <span class="title class_">Array</span>&lt;<span class="built_in">string</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">A2</span> = [<span class="built_in">string</span> <span class="built_in">string</span>]</span><br></pre></td></tr></table></figure>
 
 <h3 id="描述函数对象"><a href="#描述函数对象" class="headerlink" title="描述函数对象"></a>描述函数对象</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">FnA</span> = <span class="function">(<span class="params">a: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnVoid</span> = <span class="function">() =&gt;</span> <span class="built_in">void</span> <span class="comment">// 没有返回值  一般没有返回值用这种写法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnUndefined</span> = <span class="function">() =&gt;</span> <span class="literal">undefined</span> <span class="comment">// 必须返回undefined</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -244,7 +242,7 @@
     </div>
      
     <div class="post-footer__meta"><p>更新于 2022-12-29</p></div> 
-    <div class="post-entry__tags"></div> 
+    <div class="post-entry__tags"><a href="/tags/typescript/" class="post-tags__link button"># typescript</a><a href="/tags/%E5%89%8D%E7%AB%AF/" class="post-tags__link button"># 前端</a></div> 
 </article>
 
 
