@@ -1,6 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>windows开发环境搭建</title>
+    <url>/2022/06/28/windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h3 id="包管理工具-choco"><a href="#包管理工具-choco" class="headerlink" title="包管理工具 choco"></a>包管理工具 choco</h3><p>powershell中执行 </p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Set-ExecutionPolicy</span> Bypass <span class="literal">-Scope</span> <span class="keyword">Process</span> <span class="literal">-Force</span>; [<span class="type">System.Net.ServicePointManager</span>]::SecurityProtocol = [<span class="type">System.Net.ServicePointManager</span>]::SecurityProtocol <span class="operator">-bor</span> <span class="number">3072</span>; <span class="built_in">iex</span> ((<span class="built_in">New-Object</span> System.Net.WebClient).DownloadString(<span class="string">&#x27;[https://community.chocolatey.org/install.ps1](https://community.chocolatey.org/install.ps1)&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="用包管理工具安装make"><a href="#用包管理工具安装make" class="headerlink" title="用包管理工具安装make"></a>用包管理工具安装make</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">choco install make</span><br></pre></td></tr></table></figure>
+
+<h3 id="notion-host"><a href="#notion-host" class="headerlink" title="notion host"></a>notion host</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="number">119.28</span>.<span class="number">13.121</span> [<span class="type">www.notion.so</span>](http://www.notion.so/)</span><br><span class="line"><span class="number">119.28</span>.<span class="number">13.121</span> [<span class="type">msgstore.www.notion.so</span>](http://msgstore.www.notion.so/)</span><br></pre></td></tr></table></figure>
+
+<h3 id="yarn相关"><a href="#yarn相关" class="headerlink" title="yarn相关"></a>yarn相关</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">// 查看源</span><br><span class="line">yarn config get registry</span><br><span class="line">// 切换源</span><br><span class="line">yarn config <span class="built_in">set</span> registry http://npm.ingageapp.com:<span class="number">32100</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="npm-相关"><a href="#npm-相关" class="headerlink" title="npm 相关"></a>npm 相关</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">// 查看源</span><br><span class="line">npm config get registry</span><br><span class="line">// 切换源</span><br><span class="line">npm config <span class="built_in">set</span> registry http://registry.npmjs.org/</span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmmirror.com</span><br><span class="line">npm install cnpm <span class="literal">-g</span> <span class="literal">--registry</span>=https://registry.npmmirror.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>环境配置</category>
+      </categories>
+      <tags>
+        <tag>环境配置</tag>
+        <tag>windows</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/12/29/TypeScript%E7%B1%BB%E5%9E%8B%E5%9F%BA%E7%A1%801/</url>
+    <content><![CDATA[<h1 id=""><a href="#" class="headerlink" title=""></a></h1><hr>
+<p>title: TypeScript类型基础1<br>description: TypeScript类型基础1<br>date: 2022&#x2F;12&#x2F;29<br>updated: 2022&#x2F;12&#x2F;29<br>tags:</p>
+<ul>
+<li>typescript</li>
+<li>前端<br>categories:</li>
+<li>typescript</li>
+</ul>
+<hr>
+<h3 id="如何类型檫除"><a href="#如何类型檫除" class="headerlink" title="如何类型檫除"></a>如何类型檫除</h3><ol>
+<li>esbuild (快 不检查ts语法)</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm i -g esbuild</span><br><span class="line">esbuild 1.ts &gt; 1.js</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>swc (快 不检查ts语法)</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm i -g @swc/cli @swc/core</span><br><span class="line">swc 1.ts -o 1.js</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>typescript(慢 检查ts语法)</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm i -g typescript</span><br><span class="line">tsc 1.ts</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>bable(慢 检查ts语法)</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm i @babel/core @babel/cli @babel/preset-typescript</span><br><span class="line">babel --presets @babel/preset-typescript 1.ts</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>js八种数据类型 <code>null</code>、<code>undefined</code>、<code>string</code>、<code>number</code> <code>boolean</code> <code>bigint</code> <code>symbol</code> <code>object</code></p>
+<p>ts类型 js的类型加上： <code>void</code> <code>never</code> <code>enum</code> <code>unkonwn</code> <code>any</code> <code>type</code> <code>interface</code></p>
+<h1 id="用类型签名和Record描述对象"><a href="#用类型签名和Record描述对象" class="headerlink" title="用类型签名和Record描述对象"></a>用类型签名和Record描述对象</h1><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> A = &#123;</span><br><span class="line">  [<span class="attr">k</span>: <span class="built_in">string</span>]: <span class="built_in">number</span> <span class="comment">//  索引签名</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">A1</span> = <span class="title class_">Record</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt; <span class="comment">// 泛型</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">a</span>: <span class="title class_">Object</span> = <span class="number">1</span>;  <span class="comment">// 包装对象的原因导致这里不报错</span></span><br></pre></td></tr></table></figure>
+
+<p>由于Object太不精确，ts一般使用索引签名和Record泛型描述普通对象。</p>
+<h3 id="包装对象"><a href="#包装对象" class="headerlink" title="包装对象"></a>包装对象</h3><h1 id="用-和Array泛型描述数组"><a href="#用-和Array泛型描述数组" class="headerlink" title="用 [] 和Array泛型描述数组"></a>用 [] 和Array泛型描述数组</h1><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> A = <span class="built_in">string</span>[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">A1</span> = <span class="title class_">Array</span>&lt;<span class="built_in">string</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">A2</span> = [<span class="built_in">string</span> <span class="built_in">string</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="描述函数对象"><a href="#描述函数对象" class="headerlink" title="描述函数对象"></a>描述函数对象</h3><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">FnA</span> = <span class="function">(<span class="params">a: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnVoid</span> = <span class="function">() =&gt;</span> <span class="built_in">void</span> <span class="comment">// 没有返回值  一般没有返回值用这种写法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">FnUndefined</span> = <span class="function">() =&gt;</span> <span class="literal">undefined</span> <span class="comment">// 必须返回undefined</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>由于Function太不精确，ts一般使用()&#x3D;&gt;?描述函数。</p>
+<h1 id="描述其他对象"><a href="#描述其他对象" class="headerlink" title="描述其他对象"></a>描述其他对象</h1><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">d</span>: <span class="title class_">Date</span> = <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line"><span class="keyword">const</span> <span class="attr">r</span>: <span class="title class_">RegExp</span> = <span class="regexp">/ab+c/</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">m</span>:<span class="title class_">Map</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt; = <span class="keyword">new</span> <span class="title class_">Map</span>()</span><br><span class="line"><span class="keyword">const</span> <span class="attr">wm</span>: <span class="title class_">WeakMap</span>&lt;&#123;<span class="attr">name</span>: <span class="built_in">string</span>&#125;, <span class="built_in">number</span>&gt; = <span class="keyword">new</span> <span class="title class_">WeakMap</span>()</span><br><span class="line"><span class="keyword">const</span> <span class="attr">s</span>: <span class="title class_">Set</span>&lt;<span class="built_in">number</span>&gt; = <span class="keyword">new</span> <span class="title class_">Set</span>()</span><br><span class="line"><span class="keyword">const</span> <span class="attr">ws</span>: <span class="title class_">WeakSet</span>&lt;<span class="built_in">string</span>[]&gt; = <span class="keyword">new</span> <span class="title class_">WeakSet</span>()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="any-amp-unknown"><a href="#any-amp-unknown" class="headerlink" title="any&amp;unknown"></a>any&amp;unknown</h3><ul>
+<li>可以将任何东西赋给 <code>unknown</code> 类型，但在进行类型检查或类型断言之前，不能对 <code>unknown</code> 进行操作</li>
+<li>可以把任何东西分配给<code>any</code>类型，也可以对<code>any</code>类型进行任何操作</li>
+</ul>
+<p>一般不用<code>any</code>，推荐用<code>unknown</code>, 因为使用 <code>unknown</code> 类型前，必须进行类型断言</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">a</span>: <span class="built_in">any</span> = <span class="number">1</span>;</span><br><span class="line">a.<span class="title function_">toFixed</span>(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">b</span>: <span class="built_in">unknown</span> = <span class="number">2</span>;</span><br><span class="line">(b <span class="keyword">as</span> <span class="built_in">number</span>).<span class="title function_">toFixed</span>(<span class="number">2</span>) <span class="comment">// 使用前必须进行断言处理</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="枚举和位操作"><a href="#枚举和位操作" class="headerlink" title="枚举和位操作"></a>枚举和位操作</h3><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Permission</span> &#123;</span><br><span class="line">  <span class="title class_">Read</span> = <span class="number">1</span> &lt;&lt; <span class="number">0</span>, <span class="comment">// 0001</span></span><br><span class="line">  <span class="title class_">Write</span> = <span class="number">1</span> &lt;&lt; <span class="number">2</span>, <span class="comment">// 0010</span></span><br><span class="line">  <span class="title class_">Delete</span> = <span class="number">1</span> &lt;&lt; <span class="number">3</span>, <span class="comment">// 0100</span></span><br><span class="line">  <span class="title class_">Manage</span> = <span class="title class_">Read</span> | <span class="title class_">Write</span> | <span class="title class_">Delete</span>, <span class="comment">// 0111</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">user</span>: &#123;<span class="attr">perssion</span>: <span class="title class_">Permission</span>&#125; = &#123;<span class="attr">perssion</span>: <span class="number">0b0101</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ((user.<span class="property">perssion</span> &amp; <span class="title class_">Permission</span>.<span class="property">Write</span>) === <span class="title class_">Permission</span>.<span class="property">Write</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;有写权限&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="type与interface的前两个区别"><a href="#type与interface的前两个区别" class="headerlink" title="type与interface的前两个区别"></a>type与interface的前两个区别</h1><p>带有属性的函数的声明方式</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">FnWithProp</span> = &#123;</span><br><span class="line">  (<span class="attr">a</span>: <span class="built_in">number</span>, <span class="attr">b</span>: <span class="built_in">number</span>): <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">prop</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">f</span>: <span class="title class_">FnWithProp</span> = <span class="function">(<span class="params">x, y</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> x * y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">f.<span class="property">prop</span> = <span class="string">&quot;a&quot;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>type &amp; interface 相同点</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> X &#123;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> A = <span class="title class_">Array</span>&lt;<span class="built_in">string</span>&gt; &amp; &#123;<span class="attr">name</span>: <span class="built_in">string</span>&#125; &amp; X</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> A2 <span class="keyword">extends</span> <span class="title class_">Array</span>&lt;<span class="built_in">string</span>&gt; , X &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>区别：</p>
+<ol>
+<li>type 描述所有数据 interface 只描述对象</li>
+<li>type 只是别名 interface 是类型声明</li>
+<li>对外API 尽量用interface方便扩展；对内API尽量用type 防止代码分散</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="variable language_">global</span> &#123;</span><br><span class="line">  <span class="keyword">interface</span> <span class="title class_">String</span> &#123;</span><br><span class="line">    <span class="title function_">padZero</span>(<span class="attr">x</span>: <span class="built_in">string</span>) :<span class="built_in">void</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> a = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line">a.<span class="title function_">padZero</span>()</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>go学习笔记</title>
     <url>/2022/07/11/go%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h3 id="go基本命令"><a href="#go基本命令" class="headerlink" title="go基本命令"></a>go基本命令</h3><ul>
@@ -32,144 +124,6 @@
       <tags>
         <tag>go</tag>
         <tag>学习笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>从神策小程序SDK中学习小程序数据收集</title>
-    <url>/2022/02/09/%E4%BB%8E%E7%A5%9E%E7%AD%96%E5%B0%8F%E7%A8%8B%E5%BA%8FSDK%E4%B8%AD%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>业务需求，需要收集用户在小程序端的特定行为（页面浏览时长，点击行为等）。</p>
-<h3 id="初始实现"><a href="#初始实现" class="headerlink" title="初始实现"></a>初始实现</h3><p>刚开始是根据业务需求，在小程序端特定页面或者特定的事件上添加函数处理，重复代码多，每次修改很麻烦。</p>
-<h3 id="神策的实现"><a href="#神策的实现" class="headerlink" title="神策的实现"></a>神策的实现</h3><p>在同事的帮助下看了神策收集数据的方式，将小程序特定行为数据的收集写成可配置的，大大减少了重复代码，提高了代码可维护性。</p>
-<h3 id="神策SDK中的简单实现"><a href="#神策SDK中的简单实现" class="headerlink" title="神策SDK中的简单实现"></a>神策SDK中的简单实现</h3><p>小程序根据组件级别可以分为App、Page和Component。</p>
-<ol>
-<li>App</li>
-</ol>
-<p>监听App的显示和隐藏比较简单，小程序有提供专门的API</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 小程序显示</span></span><br><span class="line">wx.<span class="title function_">onAppShow</span>(<span class="keyword">function</span> (<span class="params">para</span>) &#123;</span><br><span class="line">  <span class="comment">// 获取小程序启动时的参数。与 App.onLaunch 的回调参数一致</span></span><br><span class="line">  <span class="keyword">const</span> option = wx.<span class="title function_">getLaunchOptionsSync</span>();</span><br><span class="line">  <span class="comment">// 处理逻辑</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 小程序隐藏</span></span><br><span class="line">wx.<span class="title function_">onAppHide</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 处理逻辑</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>Page</li>
-</ol>
-<p>在app.js中，App.onLaunch 中重写下Page，以记录进入每个页面的浏览时长为例：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> pageEnterTime;</span><br><span class="line"><span class="title class_">App</span>(&#123;</span><br><span class="line">  <span class="attr">onLaunch</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> oldPage = <span class="title class_">Page</span></span><br><span class="line">    <span class="title class_">Page</span> = <span class="keyword">function</span> (<span class="params">obj</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> oldOnLoad = obj.<span class="property">onLoad</span></span><br><span class="line">      <span class="comment">// 进入页面</span></span><br><span class="line">      obj.<span class="property">onLoad</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageEnterTime = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">        oldOnLoad &amp;&amp; oldOnLoad.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">const</span> oldOnHide = obj.<span class="property">onHide</span></span><br><span class="line">      <span class="comment">// 页面跳转</span></span><br><span class="line">      obj.<span class="property">onHide</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageStayTime = <span class="title class_">Date</span>.<span class="title function_">now</span>() - pageEnterTime;</span><br><span class="line">        <span class="comment">// 记录时间</span></span><br><span class="line">        oldOnHide &amp;&amp; oldOnHide.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> oldOnUnload = obj.<span class="property">onUnload</span></span><br><span class="line">      <span class="comment">// 返回按钮</span></span><br><span class="line">      obj.<span class="property">onUnload</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageStayTime = <span class="title class_">Date</span>.<span class="title function_">now</span>() - pageEnterTime</span><br><span class="line">        <span class="comment">// 记录时间</span></span><br><span class="line">        oldOnUnload &amp;&amp; oldOnUnload.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="title function_">oldPage</span>(obj);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>其他的点击事件或者页面事件类似，都可以写成这种可配置的方式</p>
-<ol>
-<li>Component</li>
-</ol>
-<p>Component和Page类似，在App.onLaunch 中重写下Component，然后处理Component事件或者点击事件</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://github.com/sensorsdata/sa-sdk-miniprogram/blob/master/product/sensorsdata.full.js">sa-sdk-miniprogram</a></p>
-]]></content>
-      <categories>
-        <category>小程序</category>
-      </categories>
-      <tags>
-        <tag>小程序</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>windows开发环境搭建</title>
-    <url>/2022/06/28/windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h3 id="包管理工具-choco"><a href="#包管理工具-choco" class="headerlink" title="包管理工具 choco"></a>包管理工具 choco</h3><p>powershell中执行 </p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Set-ExecutionPolicy</span> Bypass <span class="literal">-Scope</span> <span class="keyword">Process</span> <span class="literal">-Force</span>; [<span class="type">System.Net.ServicePointManager</span>]::SecurityProtocol = [<span class="type">System.Net.ServicePointManager</span>]::SecurityProtocol <span class="operator">-bor</span> <span class="number">3072</span>; <span class="built_in">iex</span> ((<span class="built_in">New-Object</span> System.Net.WebClient).DownloadString(<span class="string">&#x27;[https://community.chocolatey.org/install.ps1](https://community.chocolatey.org/install.ps1)&#x27;</span>))</span><br></pre></td></tr></table></figure>
-
-<h3 id="用包管理工具安装make"><a href="#用包管理工具安装make" class="headerlink" title="用包管理工具安装make"></a>用包管理工具安装make</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">choco install make</span><br></pre></td></tr></table></figure>
-
-<h3 id="notion-host"><a href="#notion-host" class="headerlink" title="notion host"></a>notion host</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="number">119.28</span>.<span class="number">13.121</span> [<span class="type">www.notion.so</span>](http://www.notion.so/)</span><br><span class="line"><span class="number">119.28</span>.<span class="number">13.121</span> [<span class="type">msgstore.www.notion.so</span>](http://msgstore.www.notion.so/)</span><br></pre></td></tr></table></figure>
-
-<h3 id="yarn相关"><a href="#yarn相关" class="headerlink" title="yarn相关"></a>yarn相关</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">// 查看源</span><br><span class="line">yarn config get registry</span><br><span class="line">// 切换源</span><br><span class="line">yarn config <span class="built_in">set</span> registry http://npm.ingageapp.com:<span class="number">32100</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="npm-相关"><a href="#npm-相关" class="headerlink" title="npm 相关"></a>npm 相关</h3><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">// 查看源</span><br><span class="line">npm config get registry</span><br><span class="line">// 切换源</span><br><span class="line">npm config <span class="built_in">set</span> registry http://registry.npmjs.org/</span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmmirror.com</span><br><span class="line">npm install cnpm <span class="literal">-g</span> <span class="literal">--registry</span>=https://registry.npmmirror.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>环境配置</category>
-      </categories>
-      <tags>
-        <tag>环境配置</tag>
-        <tag>windows</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>初始化一个ts-jest项目</title>
-    <url>/2022/07/26/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%80%E4%B8%AAts-jest%E9%A1%B9%E7%9B%AE/</url>
-    <content><![CDATA[<h3 id="全局安装typescript"><a href="#全局安装typescript" class="headerlink" title="全局安装typescript"></a>全局安装typescript</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g typescript</span><br></pre></td></tr></table></figure>
-
-<h3 id="初始化typescript配置"><a href="#初始化typescript配置" class="headerlink" title="初始化typescript配置"></a>初始化typescript配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tsc --init</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置类型声明和构建后目录"><a href="#配置类型声明和构建后目录" class="headerlink" title="配置类型声明和构建后目录"></a>配置类型声明和构建后目录</h3><figure class="highlight tsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// tsconfig.json</span></span><br><span class="line"><span class="string">&quot;types&quot;</span>: [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;jest&quot;</span>],</span><br><span class="line"><span class="string">&quot;outDir&quot;</span>: <span class="string">&quot;./dist&quot;</span>,</span><br></pre></td></tr></table></figure>
-
-<h3 id="添加jest和ts-node等依赖"><a href="#添加jest和ts-node等依赖" class="headerlink" title="添加jest和ts-node等依赖"></a>添加jest和ts-node等依赖</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm i -D jest typescript</span><br><span class="line">npm i -D ts-jest @types/jest</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Creating config</span></span><br><span class="line">npx ts-jest config:init</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">run <span class="built_in">test</span></span></span><br><span class="line">npx jest</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>typescript</category>
-      </categories>
-      <tags>
-        <tag>typescript</tag>
-        <tag>nodejs</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在 Windows Git Bash 中安装 Zsh</title>
-    <url>/2022/01/18/%E5%9C%A8%20Windows%20Git%20Bash%E4%B8%AD%E5%AE%89%E8%A3%85Zsh/</url>
-    <content><![CDATA[<h3 id="在-Git-Bash-中安装-Zsh"><a href="#在-Git-Bash-中安装-Zsh" class="headerlink" title="在 Git Bash 中安装 Zsh"></a>在 Git Bash 中安装 Zsh</h3><ol>
-<li>从 MSYS2 软件包存储库 下载最新的<a href="https://packages.msys2.org/package/zsh?repo=msys&variant=x86_64">MSYS2</a>zsh 软件包。该文件将被命名为 类似于 .<code>zsh-5.8-5-x86_64.pkg.tar.zst</code></li>
-<li>解压下载文件到 Git Bash 安装目录中 <code>C:\Program Files\Git</code></li>
-<li>打开 Git Bash 并运行</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zsh</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li><strong>重要说明：</strong>在 Zsh 首次使用向导中配置选项卡完成和历史记录。如果由于某种原因它没有出现，或者您跳过了它，请重新运行它：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">autoload</span> -U zsh-newuser-install</span><br><span class="line">zsh-newuser-install -f</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>若要配置历史记录，请按 ，根据需要按 更改值，然后按 。<code>11-30</code></li>
-<li>要配置完成，请按”使用新的完成系统”，然后按 。<code>20</code></li>
-<li>按以保存设置。<code>0</code></li>
-</ul>
-<p>会出现一行报错：<code>ERROR: this script is obsolete, please see git-completion.zsh</code>删除文件 <code>/etc/profile.d/git-prompt.sh</code> 即可</p>
-<ol>
-<li>通过将以下内容附加到您的文件，将 Zsh 配置为默认 shell：<code>~/.bashrc</code></li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> [ -t 1 ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">exec</span> zsh</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="安装-oh-my-zsh"><a href="#安装-oh-my-zsh" class="headerlink" title="安装 oh-my-zsh"></a>安装 oh-my-zsh</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="安装插件和主题"><a href="#安装插件和主题" class="headerlink" title="安装插件和主题"></a>安装插件和主题</h3><ol>
-<li>修改插件</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plugins=(git zsh-syntax-highlighting zsh-autosuggestions)</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>安装<code>zsh-syntax-highlighting</code></li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/plugins/zsh-syntax-highlighting</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>安装<code>zsh-autosuggestions</code></li>
-</ol>
-<ul>
-<li><p>注意：终端中可能会出现奇怪的伪影和间距。要解决此问题，请使用版本：<code>v0.7.0v.0.6.4</code></p>
-<p>  <code>cd ~/.oh-my-zsh/plugins/zsh-autosuggestions   git checkout tags/v0.6.4 -b v0.6.4-branch</code></p>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions</span><br></pre></td></tr></table></figure>
-
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
-<li><a href="https://dominikrys.com/posts/zsh-in-git-bash-on-windows/">Installing Zsh (and oh-my-zsh) in Windows Git Bash</a></li>
-<li><a href="https://amagi.yukisaki.io/article/96e5adc4-1212-4260-8399-4dfd3964dc3b/">Git-Zsh on Windows安装与配置</a></li>
-<li><a href="https://juejin.cn/post/7023578642156355592">oh-my-zsh 国内安装及配置</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>环境配置</category>
-      </categories>
-      <tags>
-        <tag>环境配置</tag>
-        <tag>windows</tag>
       </tags>
   </entry>
   <entry>
@@ -221,97 +175,36 @@
       </tags>
   </entry>
   <entry>
-    <title>存储引擎-简介</title>
-    <url>/2022/08/24/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-%E7%AE%80%E4%BB%8B/</url>
-    <content><![CDATA[<h2 id="数据存储与检索背景"><a href="#数据存储与检索背景" class="headerlink" title="数据存储与检索背景"></a>数据存储与检索背景</h2><p>数据处理大致可以分成两大类：联机事务处理OLTP（on-line transaction processing）、联机分析处理OLAP（On-Line Analytical Processing）。OLTP是传统的关系型数据库的主要应用，主要是基本的、日常的事务处理，例如银行交易。OLAP是数据仓库系统的主要应用，支持复杂的分析操作，侧重决策支持，并且提供直观易懂的查询结果。</p>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>OLTP(online transaction processing)</th>
-<th>OLAP(online analysis processing)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>系统功能</td>
-<td>日常交易处理&#x2F;在线失误处理</td>
-<td>统计、分析、报表&#x2F;在线分析处理</td>
-</tr>
-<tr>
-<td>设计目标</td>
-<td>面向实时交易类应用</td>
-<td>面向统计分析类应用</td>
-</tr>
-<tr>
-<td>数据处理</td>
-<td>当前的、最新的</td>
-<td>历史的、聚集的</td>
-</tr>
-<tr>
-<td>实时性</td>
-<td>实时性读写要求高</td>
-<td>实时性读写要求低</td>
-</tr>
-<tr>
-<td>事务</td>
-<td>强事务</td>
-<td>弱事务</td>
-</tr>
-<tr>
-<td>分析要求</td>
-<td>低、简单</td>
-<td>高、复杂</td>
-</tr>
-</tbody></table>
-<h2 id="OLTP"><a href="#OLTP" class="headerlink" title="OLTP"></a>OLTP</h2><p>大多数OLTP系统中，数据存储都是以面向行(row-oriented)的方式组织的。这种方式把一行数据存放在一起。在OLAP系统中，查询语句一般是获取大量行数据中的特定某几列。</p>
-<p>OLTP的存储引擎分为<strong>面向页（b+tree）存储引擎</strong>和<strong>日志结构（lsm tree）存储引擎</strong></p>
-<h2 id="数据文件和索引文件"><a href="#数据文件和索引文件" class="headerlink" title="数据文件和索引文件"></a><strong><strong>数据文件和索引文件</strong></strong></h2><p>数据库系统的主要目的是存储数据和快速检索数据。为了实现快速检索数据会以特殊的格式来保存到文件中。特殊的存储格式可以确保：</p>
-<ul>
-<li>存储效率最高：存储每条数据记录的额外开销最小。</li>
-<li>访问效率最高：数据记录能够以最少的步骤被访问。</li>
-<li>更新效率最高：对磁盘数据做最少改动就能完成记录更新。</li>
-</ul>
-<p>数据库系统的表中存储了由多个字段构成的数据记录，每个表保存在一个单独的文件中。表中的每一条记录可以通过搜索键查找到，为了能快速从文件中查找到对应记录，数据库系统使用索引。索引实际上是一种特殊的数据结构，它可以帮助在数据文件中快速定位数据记录，而且不需要扫描整个数据文件中的所有数据记录。通常索引会在一个或一组能够能识别数据记录的字段上构建。</p>
-<p>通常数据库系统的数据记录和索引是分别存储到不同文件中的：数据文件存储数据记录；而索引文件索引数据。索引文件通常比数据文件小，通过索引文件中的数据就可以快速定位数据文件中记录位置。</p>
-<h2 id="数据文件"><a href="#数据文件" class="headerlink" title="数据文件"></a><strong>数据文件</strong></h2><p>数据文件（有时称为主文件（primary file））通常可以用<strong>索引组织表</strong>（Index-Organized Table，IOT）、<strong>堆组织表</strong>（heap-organized table，即堆文件）或<strong>哈希组织表</strong>（hash-organized table，即哈希文件）来实现。</p>
-<ul>
-<li>堆组织表(heap-organized tables)，记录不需要遵循任何特定的顺序，并且大多数情况下它们都是按写顺序放置的。这样，在追加新的页时，数据库便不需要额外的工作或文件重组。堆文件需要额外的索引结构来指向存储数据记录的位置，以使其能够被检索到。(Oracle, PostgreSQL)</li>
-<li>哈希组织表（hash-organized tables），记录存储在桶中，并且键的哈希值确定记录属于哪个桶。存储在桶中的记录可以按追加顺序存储，也可以按键排序存储以提高查找速度。</li>
-<li>索引组织表(Index-Organized Table) 将索引和数据记录存储在一起。由于记录是按键的顺序存储的，所以索引组织表中的范围扫描可以通过顺序扫描其内容来实现。(innoDB)</li>
-</ul>
-<img src="/2022/08/24/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-%E7%AE%80%E4%BB%8B/Untitled.png" class="lazy" data-srcset="/2022/08/24/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-%E7%AE%80%E4%BB%8B/Untitled.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="" title="Untitled">
-
-<h2 id="索引文件"><a href="#索引文件" class="headerlink" title="索引文件"></a><strong><strong>索引文件</strong></strong></h2><p>索引是一种能帮助高效磁盘数据检索的数据结构。通常索引具有特殊的数据结构，该结构能映射键到键对应数据记录在数据文件中的位置。</p>
-<p>主文件(数据文件)上的索引称为主索引。在大多数情况下，主索引构建在主键上，主键可以是一个键也可以是一组能标识记录的键。所有其他索引都称为辅助索引（Secondary indexes）。</p>
-<p>辅助索引可以直接映射到数据记录位置，或者只是简单的映射到记录所对应的主键。多个辅助索引可以指向相同的记录，从而允许通过不同的字段和不同的索引来查找单个数据记录。主索引文件为每个搜索键保存唯一一个条目，而次索引可能为每个搜索键保存多个条目。</p>
-<p>如果数据记录的顺序和搜索键的顺序一致，则此索引称为聚簇索引。这种情况下索引和的数据记录通常存储在相同的文件中。如果数据存储在单独的文件中，并且其顺序和键的顺序不一致，则该索引称非聚簇索引。</p>
-<img src="/2022/08/24/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-%E7%AE%80%E4%BB%8B/Untitled.png" class="lazy" data-srcset="/2022/08/24/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-%E7%AE%80%E4%BB%8B/Untitled.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="" title="Untitled">
-
-<p>许多数据库系统都有自带显式主键对应唯一一条数据库记录。在没有指定主键的情况下，存储引擎可以创建一个隐式主键(如，MySQL InnoDB会添加一个自动递增列)。</p>
-<h2 id="辅助索引"><a href="#辅助索引" class="headerlink" title="辅助索引"></a>辅助索引</h2><ol>
-<li>直接通过文件偏移量引用数据记录</li>
-<li>通过主键索引引用数据记录</li>
+    <title>从神策小程序SDK中学习小程序数据收集</title>
+    <url>/2022/02/09/%E4%BB%8E%E7%A5%9E%E7%AD%96%E5%B0%8F%E7%A8%8B%E5%BA%8FSDK%E4%B8%AD%E5%AD%A6%E4%B9%A0%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>业务需求，需要收集用户在小程序端的特定行为（页面浏览时长，点击行为等）。</p>
+<h3 id="初始实现"><a href="#初始实现" class="headerlink" title="初始实现"></a>初始实现</h3><p>刚开始是根据业务需求，在小程序端特定页面或者特定的事件上添加函数处理，重复代码多，每次修改很麻烦。</p>
+<h3 id="神策的实现"><a href="#神策的实现" class="headerlink" title="神策的实现"></a>神策的实现</h3><p>在同事的帮助下看了神策收集数据的方式，将小程序特定行为数据的收集写成可配置的，大大减少了重复代码，提高了代码可维护性。</p>
+<h3 id="神策SDK中的简单实现"><a href="#神策SDK中的简单实现" class="headerlink" title="神策SDK中的简单实现"></a>神策SDK中的简单实现</h3><p>小程序根据组件级别可以分为App、Page和Component。</p>
+<ol>
+<li>App</li>
 </ol>
-<p>通过直接引用数据，我们可以减少查找磁盘的次数，但在维护过程中，每当更新或重新定位记录时，我们都必须承担更新指针所带来的成本。通过主索引间接引用数据可以降低指针更新的成本，但在读取路径上成本更高。</p>
-<p>为了减少指针更新的成本，一些数据库的具体实现是使用主键进行间接操作，而不是直接使用数据偏移量。例如，MySQL InnoDB使用主索引并执行两次查找：一次在二级索引中，一次在主索引中。这样并不直接使用二级索引查询得到的偏移量，因此增加了一次主索引的查询开销。</p>
+<p>监听App的显示和隐藏比较简单，小程序有提供专门的API</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 小程序显示</span></span><br><span class="line">wx.<span class="title function_">onAppShow</span>(<span class="keyword">function</span> (<span class="params">para</span>) &#123;</span><br><span class="line">  <span class="comment">// 获取小程序启动时的参数。与 App.onLaunch 的回调参数一致</span></span><br><span class="line">  <span class="keyword">const</span> option = wx.<span class="title function_">getLaunchOptionsSync</span>();</span><br><span class="line">  <span class="comment">// 处理逻辑</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 小程序隐藏</span></span><br><span class="line">wx.<span class="title function_">onAppHide</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 处理逻辑</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-
-<h2 id="存储结构的分类"><a href="#存储结构的分类" class="headerlink" title="存储结构的分类"></a>存储结构的分类</h2><ol>
-<li>In-place update structure: 就地更新结构，如B树、B+树，直接覆盖旧记录来存储更新内容。</li>
-<li>Out-of-place update structure：异位更新结构，如LSM树，会将更新的内容存储到新的位置，不覆盖旧的条目。</li>
+<ol>
+<li>Page</li>
 </ol>
-<h3 id="就地更新结构"><a href="#就地更新结构" class="headerlink" title="就地更新结构"></a>就地更新结构</h3><p>B树，B+树等，只会存储每个记录的最新版本，一般读性能优，写入代价比较大，因为更新会导致随机IO；在早期机械硬盘结构上表现最好，所以占据了主流。</p>
-<h3 id="异位更新结构"><a href="#异位更新结构" class="headerlink" title="异位更新结构"></a>异位更新结构</h3><p>LSM树，顺序写，写入性能更优，读取性能不太好。</p>
-<p>SSD 上有两个显著的优势，第一个是 SSD 没有寻到时间，相比机械硬盘读性能有了很大的提升，很大程度上弥补了 lsm 数读取性能弱这一短板。第二点，SSD是基于闪存进行存储的，但闪存不能覆盖写，闪存块需要擦除才能够写入。而 lsm 数而 lsm 数追加写的写入模式天然契合了 SSD 的这种特性，从而很大程度上节省了擦除的损耗，并提升了 SSD 的使用寿命。</p>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>存储系统中一个重要的权衡：精心选择的索引加快了读查询的速度，但是每个索引都会拖慢写入速度。</p>
+<p>在app.js中，App.onLaunch 中重写下Page，以记录进入每个页面的浏览时长为例：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> pageEnterTime;</span><br><span class="line"><span class="title class_">App</span>(&#123;</span><br><span class="line">  <span class="attr">onLaunch</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> oldPage = <span class="title class_">Page</span></span><br><span class="line">    <span class="title class_">Page</span> = <span class="keyword">function</span> (<span class="params">obj</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> oldOnLoad = obj.<span class="property">onLoad</span></span><br><span class="line">      <span class="comment">// 进入页面</span></span><br><span class="line">      obj.<span class="property">onLoad</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageEnterTime = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">        oldOnLoad &amp;&amp; oldOnLoad.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">const</span> oldOnHide = obj.<span class="property">onHide</span></span><br><span class="line">      <span class="comment">// 页面跳转</span></span><br><span class="line">      obj.<span class="property">onHide</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageStayTime = <span class="title class_">Date</span>.<span class="title function_">now</span>() - pageEnterTime;</span><br><span class="line">        <span class="comment">// 记录时间</span></span><br><span class="line">        oldOnHide &amp;&amp; oldOnHide.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> oldOnUnload = obj.<span class="property">onUnload</span></span><br><span class="line">      <span class="comment">// 返回按钮</span></span><br><span class="line">      obj.<span class="property">onUnload</span> = <span class="keyword">function</span> (<span class="params">options</span>) &#123;</span><br><span class="line">        pageStayTime = <span class="title class_">Date</span>.<span class="title function_">now</span>() - pageEnterTime</span><br><span class="line">        <span class="comment">// 记录时间</span></span><br><span class="line">        oldOnUnload &amp;&amp; oldOnUnload.<span class="title function_">call</span>(<span class="variable language_">this</span>, options);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="title function_">oldPage</span>(obj);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>其他的点击事件或者页面事件类似，都可以写成这种可配置的方式</p>
+<ol>
+<li>Component</li>
+</ol>
+<p>Component和Page类似，在App.onLaunch 中重写下Component，然后处理Component事件或者点击事件</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://github.com/sensorsdata/sa-sdk-miniprogram/blob/master/product/sensorsdata.full.js">sa-sdk-miniprogram</a></p>
 ]]></content>
       <categories>
-        <category>数据库</category>
-        <category>存储</category>
+        <category>小程序</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
-        <tag>存储</tag>
+        <tag>小程序</tag>
       </tags>
   </entry>
   <entry>
@@ -504,6 +397,180 @@
       <tags>
         <tag>前端</tag>
         <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>初始化一个ts-jest项目</title>
+    <url>/2022/07/26/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%80%E4%B8%AAts-jest%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<h3 id="全局安装typescript"><a href="#全局安装typescript" class="headerlink" title="全局安装typescript"></a>全局安装typescript</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g typescript</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化typescript配置"><a href="#初始化typescript配置" class="headerlink" title="初始化typescript配置"></a>初始化typescript配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tsc --init</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置类型声明和构建后目录"><a href="#配置类型声明和构建后目录" class="headerlink" title="配置类型声明和构建后目录"></a>配置类型声明和构建后目录</h3><figure class="highlight tsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// tsconfig.json</span></span><br><span class="line"><span class="string">&quot;types&quot;</span>: [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;jest&quot;</span>],</span><br><span class="line"><span class="string">&quot;outDir&quot;</span>: <span class="string">&quot;./dist&quot;</span>,</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加jest和ts-node等依赖"><a href="#添加jest和ts-node等依赖" class="headerlink" title="添加jest和ts-node等依赖"></a>添加jest和ts-node等依赖</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm i -D jest typescript</span><br><span class="line">npm i -D ts-jest @types/jest</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Creating config</span></span><br><span class="line">npx ts-jest config:init</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">run <span class="built_in">test</span></span></span><br><span class="line">npx jest</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>typescript</category>
+      </categories>
+      <tags>
+        <tag>typescript</tag>
+        <tag>nodejs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>存储引擎-简介</title>
+    <url>/2022/08/24/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<h2 id="数据存储与检索背景"><a href="#数据存储与检索背景" class="headerlink" title="数据存储与检索背景"></a>数据存储与检索背景</h2><p>数据处理大致可以分成两大类：联机事务处理OLTP（on-line transaction processing）、联机分析处理OLAP（On-Line Analytical Processing）。OLTP是传统的关系型数据库的主要应用，主要是基本的、日常的事务处理，例如银行交易。OLAP是数据仓库系统的主要应用，支持复杂的分析操作，侧重决策支持，并且提供直观易懂的查询结果。</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>OLTP(online transaction processing)</th>
+<th>OLAP(online analysis processing)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统功能</td>
+<td>日常交易处理&#x2F;在线失误处理</td>
+<td>统计、分析、报表&#x2F;在线分析处理</td>
+</tr>
+<tr>
+<td>设计目标</td>
+<td>面向实时交易类应用</td>
+<td>面向统计分析类应用</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>当前的、最新的</td>
+<td>历史的、聚集的</td>
+</tr>
+<tr>
+<td>实时性</td>
+<td>实时性读写要求高</td>
+<td>实时性读写要求低</td>
+</tr>
+<tr>
+<td>事务</td>
+<td>强事务</td>
+<td>弱事务</td>
+</tr>
+<tr>
+<td>分析要求</td>
+<td>低、简单</td>
+<td>高、复杂</td>
+</tr>
+</tbody></table>
+<h2 id="OLTP"><a href="#OLTP" class="headerlink" title="OLTP"></a>OLTP</h2><p>大多数OLTP系统中，数据存储都是以面向行(row-oriented)的方式组织的。这种方式把一行数据存放在一起。在OLAP系统中，查询语句一般是获取大量行数据中的特定某几列。</p>
+<p>OLTP的存储引擎分为<strong>面向页（b+tree）存储引擎</strong>和<strong>日志结构（lsm tree）存储引擎</strong></p>
+<h2 id="数据文件和索引文件"><a href="#数据文件和索引文件" class="headerlink" title="数据文件和索引文件"></a><strong><strong>数据文件和索引文件</strong></strong></h2><p>数据库系统的主要目的是存储数据和快速检索数据。为了实现快速检索数据会以特殊的格式来保存到文件中。特殊的存储格式可以确保：</p>
+<ul>
+<li>存储效率最高：存储每条数据记录的额外开销最小。</li>
+<li>访问效率最高：数据记录能够以最少的步骤被访问。</li>
+<li>更新效率最高：对磁盘数据做最少改动就能完成记录更新。</li>
+</ul>
+<p>数据库系统的表中存储了由多个字段构成的数据记录，每个表保存在一个单独的文件中。表中的每一条记录可以通过搜索键查找到，为了能快速从文件中查找到对应记录，数据库系统使用索引。索引实际上是一种特殊的数据结构，它可以帮助在数据文件中快速定位数据记录，而且不需要扫描整个数据文件中的所有数据记录。通常索引会在一个或一组能够能识别数据记录的字段上构建。</p>
+<p>通常数据库系统的数据记录和索引是分别存储到不同文件中的：数据文件存储数据记录；而索引文件索引数据。索引文件通常比数据文件小，通过索引文件中的数据就可以快速定位数据文件中记录位置。</p>
+<h2 id="数据文件"><a href="#数据文件" class="headerlink" title="数据文件"></a><strong>数据文件</strong></h2><p>数据文件（有时称为主文件（primary file））通常可以用<strong>索引组织表</strong>（Index-Organized Table，IOT）、<strong>堆组织表</strong>（heap-organized table，即堆文件）或<strong>哈希组织表</strong>（hash-organized table，即哈希文件）来实现。</p>
+<ul>
+<li>堆组织表(heap-organized tables)，记录不需要遵循任何特定的顺序，并且大多数情况下它们都是按写顺序放置的。这样，在追加新的页时，数据库便不需要额外的工作或文件重组。堆文件需要额外的索引结构来指向存储数据记录的位置，以使其能够被检索到。(Oracle, PostgreSQL)</li>
+<li>哈希组织表（hash-organized tables），记录存储在桶中，并且键的哈希值确定记录属于哪个桶。存储在桶中的记录可以按追加顺序存储，也可以按键排序存储以提高查找速度。</li>
+<li>索引组织表(Index-Organized Table) 将索引和数据记录存储在一起。由于记录是按键的顺序存储的，所以索引组织表中的范围扫描可以通过顺序扫描其内容来实现。(innoDB)</li>
+</ul>
+<img src="/2022/08/24/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-%E7%AE%80%E4%BB%8B/Untitled.png" class="lazy" data-srcset="/2022/08/24/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-%E7%AE%80%E4%BB%8B/Untitled.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="" title="Untitled">
+
+<h2 id="索引文件"><a href="#索引文件" class="headerlink" title="索引文件"></a><strong><strong>索引文件</strong></strong></h2><p>索引是一种能帮助高效磁盘数据检索的数据结构。通常索引具有特殊的数据结构，该结构能映射键到键对应数据记录在数据文件中的位置。</p>
+<p>主文件(数据文件)上的索引称为主索引。在大多数情况下，主索引构建在主键上，主键可以是一个键也可以是一组能标识记录的键。所有其他索引都称为辅助索引（Secondary indexes）。</p>
+<p>辅助索引可以直接映射到数据记录位置，或者只是简单的映射到记录所对应的主键。多个辅助索引可以指向相同的记录，从而允许通过不同的字段和不同的索引来查找单个数据记录。主索引文件为每个搜索键保存唯一一个条目，而次索引可能为每个搜索键保存多个条目。</p>
+<p>如果数据记录的顺序和搜索键的顺序一致，则此索引称为聚簇索引。这种情况下索引和的数据记录通常存储在相同的文件中。如果数据存储在单独的文件中，并且其顺序和键的顺序不一致，则该索引称非聚簇索引。</p>
+<img src="/2022/08/24/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-%E7%AE%80%E4%BB%8B/Untitled.png" class="lazy" data-srcset="/2022/08/24/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-%E7%AE%80%E4%BB%8B/Untitled.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="" title="Untitled">
+
+<p>许多数据库系统都有自带显式主键对应唯一一条数据库记录。在没有指定主键的情况下，存储引擎可以创建一个隐式主键(如，MySQL InnoDB会添加一个自动递增列)。</p>
+<h2 id="辅助索引"><a href="#辅助索引" class="headerlink" title="辅助索引"></a>辅助索引</h2><ol>
+<li>直接通过文件偏移量引用数据记录</li>
+<li>通过主键索引引用数据记录</li>
+</ol>
+<p>通过直接引用数据，我们可以减少查找磁盘的次数，但在维护过程中，每当更新或重新定位记录时，我们都必须承担更新指针所带来的成本。通过主索引间接引用数据可以降低指针更新的成本，但在读取路径上成本更高。</p>
+<p>为了减少指针更新的成本，一些数据库的具体实现是使用主键进行间接操作，而不是直接使用数据偏移量。例如，MySQL InnoDB使用主索引并执行两次查找：一次在二级索引中，一次在主索引中。这样并不直接使用二级索引查询得到的偏移量，因此增加了一次主索引的查询开销。</p>
+
+
+<h2 id="存储结构的分类"><a href="#存储结构的分类" class="headerlink" title="存储结构的分类"></a>存储结构的分类</h2><ol>
+<li>In-place update structure: 就地更新结构，如B树、B+树，直接覆盖旧记录来存储更新内容。</li>
+<li>Out-of-place update structure：异位更新结构，如LSM树，会将更新的内容存储到新的位置，不覆盖旧的条目。</li>
+</ol>
+<h3 id="就地更新结构"><a href="#就地更新结构" class="headerlink" title="就地更新结构"></a>就地更新结构</h3><p>B树，B+树等，只会存储每个记录的最新版本，一般读性能优，写入代价比较大，因为更新会导致随机IO；在早期机械硬盘结构上表现最好，所以占据了主流。</p>
+<h3 id="异位更新结构"><a href="#异位更新结构" class="headerlink" title="异位更新结构"></a>异位更新结构</h3><p>LSM树，顺序写，写入性能更优，读取性能不太好。</p>
+<p>SSD 上有两个显著的优势，第一个是 SSD 没有寻到时间，相比机械硬盘读性能有了很大的提升，很大程度上弥补了 lsm 数读取性能弱这一短板。第二点，SSD是基于闪存进行存储的，但闪存不能覆盖写，闪存块需要擦除才能够写入。而 lsm 数而 lsm 数追加写的写入模式天然契合了 SSD 的这种特性，从而很大程度上节省了擦除的损耗，并提升了 SSD 的使用寿命。</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>存储系统中一个重要的权衡：精心选择的索引加快了读查询的速度，但是每个索引都会拖慢写入速度。</p>
+]]></content>
+      <categories>
+        <category>数据库</category>
+        <category>存储</category>
+      </categories>
+      <tags>
+        <tag>数据库</tag>
+        <tag>存储</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在 Windows Git Bash 中安装 Zsh</title>
+    <url>/2022/01/18/%E5%9C%A8%20Windows%20Git%20Bash%E4%B8%AD%E5%AE%89%E8%A3%85Zsh/</url>
+    <content><![CDATA[<h3 id="在-Git-Bash-中安装-Zsh"><a href="#在-Git-Bash-中安装-Zsh" class="headerlink" title="在 Git Bash 中安装 Zsh"></a>在 Git Bash 中安装 Zsh</h3><ol>
+<li>从 MSYS2 软件包存储库 下载最新的<a href="https://packages.msys2.org/package/zsh?repo=msys&variant=x86_64">MSYS2</a>zsh 软件包。该文件将被命名为 类似于 .<code>zsh-5.8-5-x86_64.pkg.tar.zst</code></li>
+<li>解压下载文件到 Git Bash 安装目录中 <code>C:\Program Files\Git</code></li>
+<li>打开 Git Bash 并运行</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zsh</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>重要说明：</strong>在 Zsh 首次使用向导中配置选项卡完成和历史记录。如果由于某种原因它没有出现，或者您跳过了它，请重新运行它：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">autoload</span> -U zsh-newuser-install</span><br><span class="line">zsh-newuser-install -f</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若要配置历史记录，请按 ，根据需要按 更改值，然后按 。<code>11-30</code></li>
+<li>要配置完成，请按”使用新的完成系统”，然后按 。<code>20</code></li>
+<li>按以保存设置。<code>0</code></li>
+</ul>
+<p>会出现一行报错：<code>ERROR: this script is obsolete, please see git-completion.zsh</code>删除文件 <code>/etc/profile.d/git-prompt.sh</code> 即可</p>
+<ol>
+<li>通过将以下内容附加到您的文件，将 Zsh 配置为默认 shell：<code>~/.bashrc</code></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> [ -t 1 ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">exec</span> zsh</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="安装-oh-my-zsh"><a href="#安装-oh-my-zsh" class="headerlink" title="安装 oh-my-zsh"></a>安装 oh-my-zsh</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="安装插件和主题"><a href="#安装插件和主题" class="headerlink" title="安装插件和主题"></a>安装插件和主题</h3><ol>
+<li>修改插件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">plugins=(git zsh-syntax-highlighting zsh-autosuggestions)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>安装<code>zsh-syntax-highlighting</code></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/plugins/zsh-syntax-highlighting</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>安装<code>zsh-autosuggestions</code></li>
+</ol>
+<ul>
+<li><p>注意：终端中可能会出现奇怪的伪影和间距。要解决此问题，请使用版本：<code>v0.7.0v.0.6.4</code></p>
+<p>  <code>cd ~/.oh-my-zsh/plugins/zsh-autosuggestions   git checkout tags/v0.6.4 -b v0.6.4-branch</code></p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="https://dominikrys.com/posts/zsh-in-git-bash-on-windows/">Installing Zsh (and oh-my-zsh) in Windows Git Bash</a></li>
+<li><a href="https://amagi.yukisaki.io/article/96e5adc4-1212-4260-8399-4dfd3964dc3b/">Git-Zsh on Windows安装与配置</a></li>
+<li><a href="https://juejin.cn/post/7023578642156355592">oh-my-zsh 国内安装及配置</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>环境配置</category>
+      </categories>
+      <tags>
+        <tag>环境配置</tag>
+        <tag>windows</tag>
       </tags>
   </entry>
 </search>
