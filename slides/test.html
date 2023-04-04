@@ -122,7 +122,7 @@
             
             <h3>内存生命周期</h3>
 <p>不管什么程序语言，内存生命周期基本是一致的：
-<img src="./javascript-memory/01.png" alt=""></p>
+<img src="./images/01.png" alt=""></p>
 <ol>
 <li><strong>内存分配</strong> – 分配你所需要的内存</li>
 <li><strong>内存使用</strong> – 使用分配到的内存（读、写）</li>
@@ -258,7 +258,7 @@ obj2 = null;
             </section>
         
             <section >
-                <p><img src="./javascript-memory/gc_mark_sweep.gif" alt=""></p>
+                <p><img src="./images/gc_mark_sweep.gif" alt=""></p>
 
             </section>
         
@@ -269,7 +269,7 @@ let user = {
   name: &quot;John&quot;
 };
 </code></pre>
-<p><img src="./javascript-memory/02.png" alt=""></p>
+<p><img src="./images/02.png" alt=""></p>
 <p>变量 “user” 引用了对象 <code>{name：&quot;John&quot;}</code></p>
 
             </section>
@@ -278,7 +278,7 @@ let user = {
                 <p>如果 user 的值被重写了，这个引用就没了</p>
 <pre><code class="language-js">user = null;
 </code></pre>
-<p><img src="./javascript-memory/03.png" alt=""></p>
+<p><img src="./images/03.png" alt=""></p>
 <p>对象<code>{name：&quot;John&quot;}</code>无法被访问到了，垃圾回收器会认为它是垃圾数据并进行回收，然后释放内存。</p>
 
             </section>
@@ -312,13 +312,13 @@ let user = {
 }
 fn()
 </code></pre>
-<p><img src="./javascript-memory/04.png" alt=""></p>
+<p><img src="./images/04.png" alt=""></p>
 
             </section>
         
             <section >
                 <p>局部变量没有引用会再下次gc时被清除
-<img src="./javascript-memory/05.png" alt=""></p>
+<img src="./images/05.png" alt=""></p>
 
             </section>
         
@@ -390,12 +390,12 @@ setInterval(() =&gt; {
         
             <section >
                 <p>反证一下</p>
-<p><img src="./javascript-memory/06.png" alt=""></p>
+<p><img src="./images/06.png" alt=""></p>
 
             </section>
         
             <section >
-                <p><img src="./javascript-memory/07.png" alt=""></p>
+                <p><img src="./images/07.png" alt=""></p>
 
             </section>
         
