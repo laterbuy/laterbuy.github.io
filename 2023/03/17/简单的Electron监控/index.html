@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    
+    
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x132.png">
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>简单的Electron监控 | later的博客</title>
+
+
+    <meta name="keywords" content="typescript, Electron">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="简单的Electron监控">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单的Electron监控">
+<meta property="og:url" content="http://example.com/2023/03/17/%E7%AE%80%E5%8D%95%E7%9A%84Electron%E7%9B%91%E6%8E%A7/index.html">
+<meta property="og:site_name" content="later的博客">
+<meta property="og:description" content="简单的Electron监控">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/17/%E7%AE%80%E5%8D%95%E7%9A%84Electron%E7%9B%91%E6%8E%A7/01.png">
+<meta property="article:published_time" content="2023-03-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-16T16:00:00.000Z">
+<meta property="article:author" content="Hou">
+<meta property="article:tag" content="typescript">
+<meta property="article:tag" content="Electron">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/03/17/%E7%AE%80%E5%8D%95%E7%9A%84Electron%E7%9B%91%E6%8E%A7/01.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/atom-one-light.css" media="none" >
+        
+            <link rel="stylesheet" id="hl-dark-theme" href="/css/highlight/atom-one-dark.css" media="none">
+        
+    
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/style/dark.css">
+
+    
+<script src="/js/darkmode.js"></script>
+
+
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+    <body>
+        <div id="app" tabindex="-1">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">later的博客</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/category/" class="navbar-menu button">分类</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+            </div>
+        
+        
+        
+    <a href="/search/" id="btn-search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="32"><path d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z"></path></svg>
+    </a>
+
+
+        
+        
+    <a href="javaScript:void(0);" id="btn-toggle-dark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/category/" class="dropdown-menu button">分类</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        简单的Electron监控
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2023/03/" class="post-meta__date button">2023-03-17</a>
+        
+    <span class="separate-dot"></span><a href="/categories/typescript/" class="button">typescript</a>
+
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84"><span class="toc-text">目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E6%96%B9%E6%A1%88"><span class="toc-text">监控方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-text">以用户体验为中心的性能指标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%9B%91%E6%8E%A7"><span class="toc-text">内存监控</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Electron%E5%B4%A9%E6%BA%83%E7%9B%91%E6%8E%A7"><span class="toc-text">Electron崩溃监控</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7"><span class="toc-text">异常捕获</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">文章目录</div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84"><span class="toc-text">目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E6%96%B9%E6%A1%88"><span class="toc-text">监控方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-text">以用户体验为中心的性能指标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%9B%91%E6%8E%A7"><span class="toc-text">内存监控</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Electron%E5%B4%A9%E6%BA%83%E7%9B%91%E6%8E%A7"><span class="toc-text">Electron崩溃监控</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7"><span class="toc-text">异常捕获</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+    </div>
+
+
+<article class="post post__with-toc content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>前端需要做一个简单的监控方案，只需要监控到页面的异常和性能即可。</p>
+<h3 id="监控方案"><a href="#监控方案" class="headerlink" title="监控方案"></a>监控方案</h3><h4 id="以用户体验为中心的性能指标"><a href="#以用户体验为中心的性能指标" class="headerlink" title="以用户体验为中心的性能指标"></a>以用户体验为中心的性能指标</h4><p>侧重于用户体验的三个方面——加载性能、交互性和视觉稳定性——并包括以下指标（及各指标相应的阈值）：</p>
+<img src="/2023/03/17/%E7%AE%80%E5%8D%95%E7%9A%84Electron%E7%9B%91%E6%8E%A7/01.png" class="lazy" data-srcset="/2023/03/17/%E7%AE%80%E5%8D%95%E7%9A%84Electron%E7%9B%91%E6%8E%A7/01.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://web.dev/lcp/">Largest Contentful Paint (LCP)</a> ：最大内容绘制，测量加载性能。为了提供良好的用户体验，LCP 应在页面首次开始加载后的2.5 秒内发生。</li>
+<li><a target="_blank" rel="noopener" href="https://web.dev/fid/">First Input Delay (FID)</a> ：首次输入延迟，测量交互性。为了提供良好的用户体验，页面的 FID 应为100 毫秒或更短。</li>
+<li><a target="_blank" rel="noopener" href="https://web.dev/cls/">Cumulative Layout Shift (CLS)</a> ：累积布局偏移，测量视觉稳定性。为了提供良好的用户体验，页面的 CLS 应保持在 0.1. 或更少。</li>
+</ul>
+<p>这三个指标都可以通过 <code>Performance</code> 接口获直接或者间接获取到，当然谷歌提供了完成的解决方案 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/web-vitals">web-vitals</a>:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; onLCP, onFID, onCLS &#125; <span class="keyword">from</span> <span class="string">&#x27;web-vitals&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">onCLS</span>(monitorPref); </span><br><span class="line"><span class="title function_">onFID</span>(monitorPref);</span><br><span class="line"><span class="title function_">onLCP</span>(monitorPref); </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="内存监控"><a href="#内存监控" class="headerlink" title="内存监控"></a>内存监控</h4><p>浏览器在 <code>performance</code> 对象上加上了 <code>memory</code> 属性，通过获取 <code>performance.memory</code> 可以得到一组当前页面使用内存数据的信息。具体如下：</p>
+<ul>
+<li><code>jsHeapSizeLimit</code>：表示当前页面最多可以获得的 JavaScript 堆大小；</li>
+<li><code>totalJSHeapSize</code>：表示当前页面已经分配的 JavaScript 堆大小；</li>
+<li><code>usedJsHeapSize</code>：表示当前页面 JavaScript 已经使用的堆大小。</li>
+</ul>
+<p>浏览器在分配内存的时候，会一次性向系统申请一块内存，然后在 JavaScript 需要的时候直接提供使用，因而 <code>totalJSHeapSize</code> 总是大于 <code>usedJsHeapSize</code> 的。如果 JavaScript 需要的内存多于已经申请的量，就会继续申请一块，直到达到 <code>jsHeapSizeLimit</code> 的上限，触发页面崩溃。</p>
+<p>通过观察 <code>jsHeapSizeLimit</code> 和 <code>totalJSHeapSize</code> 这两个字段，可以用于监控当前的页面是否有耗尽内存的危险；同时，如果内存一直在涨，不见回落，很可能需要排查是否有潜在的内存泄漏危险。</p>
+<p>Electron的nodejs端同理，用<code>process.getHeapStatistics()</code>获取内存相关数据</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// web端</span></span><br><span class="line"><span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// @ts-ignore</span></span><br><span class="line">    <span class="keyword">const</span> memory = performance.<span class="property">memory</span>;</span><br><span class="line">    <span class="comment">// # bytes / KB / MB / GB</span></span><br><span class="line">    <span class="keyword">const</span> limit =</span><br><span class="line">      <span class="title class_">Math</span>.<span class="title function_">round</span>((memory[<span class="string">&quot;jsHeapSizeLimit&quot;</span>] / <span class="number">1024</span> / <span class="number">1024</span>) * <span class="number">100</span>) / <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">const</span> total =</span><br><span class="line">      <span class="title class_">Math</span>.<span class="title function_">round</span>((memory[<span class="string">&quot;totalJSHeapSize&quot;</span>] / <span class="number">1024</span> / <span class="number">1024</span>) * <span class="number">100</span>) / <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">if</span> (limit - total &lt; <span class="number">500</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;memory leak&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// console.log(`Heap limit $&#123;limit&#125; MB`);</span></span><br><span class="line">    <span class="comment">// console.log(`Heap total $&#123;total&#125; MB`);</span></span><br><span class="line">  &#125;, <span class="number">5</span> * <span class="number">1000</span>);</span><br><span class="line"><span class="comment">// 主进程端</span></span><br><span class="line"><span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// @ts-ignore</span></span><br><span class="line">    <span class="keyword">const</span> memory = process.<span class="title function_">getHeapStatistics</span>();</span><br><span class="line">    <span class="keyword">const</span> limit =</span><br><span class="line">      <span class="title class_">Math</span>.<span class="title function_">round</span>((memory[<span class="string">&quot;heapSizeLimit&quot;</span>] / <span class="number">1024</span>) * <span class="number">100</span>) / <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">const</span> total =</span><br><span class="line">      <span class="title class_">Math</span>.<span class="title function_">round</span>((memory[<span class="string">&quot;totalHeapSize&quot;</span>] / <span class="number">1024</span>) * <span class="number">100</span>) / <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">if</span> (limit - total &lt; <span class="number">500</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;memory leak&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// console.log(`Heap limit $&#123;limit&#125; MB`);</span></span><br><span class="line">    <span class="comment">// console.log(`Heap total $&#123;total&#125; MB`);</span></span><br><span class="line">  &#125;, <span class="number">5</span> * <span class="number">1000</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Electron崩溃监控"><a href="#Electron崩溃监控" class="headerlink" title="Electron崩溃监控"></a>Electron崩溃监控</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 渲染进程崩溃</span></span><br><span class="line">app.<span class="title function_">on</span>(<span class="string">&#x27;render-process-gone&#x27;</span>, <span class="function">(<span class="params">event, webContents, details</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">warn</span>(<span class="string">&#x27;app:render-process-gone&#x27;</span>, event, webContents, details);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 子进程崩溃</span></span><br><span class="line">app.<span class="title function_">on</span>(<span class="string">&#x27;child-process-gone&#x27;</span>, <span class="function">(<span class="params">event, details</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">warn</span>(<span class="string">&#x27;app:child-process-gone&#x27;</span>, event, details);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="异常捕获"><a href="#异常捕获" class="headerlink" title="异常捕获"></a>异常捕获</h4><ol>
+<li><p>代码异常和资源加载异常</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;error&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">type</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">target</span> <span class="keyword">instanceof</span> <span class="title class_">Image</span>) &#123; <span class="comment">// 资源加载异常</span></span><br><span class="line">     <span class="keyword">type</span> = <span class="string">&#x27;resource error&#x27;</span>;</span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (event.<span class="property">target</span> <span class="keyword">instanceof</span> <span class="title class_">HTMLLinkElement</span>) &#123; <span class="comment">// 资源加载异常</span></span><br><span class="line">     <span class="keyword">type</span> = <span class="string">&#x27;resource error&#x27;</span>;</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="keyword">type</span> = <span class="string">&#x27;code error&#x27;</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>代码报错和promise报错</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;unhandledrejection&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; reason, timeStamp &#125; = event;</span><br><span class="line">    <span class="keyword">const</span> &#123; message, stack &#125; = reason;</span><br><span class="line">    <span class="keyword">const</span> url = <span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">href</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">type</span> = <span class="string">&#x27;code error&#x27;</span>;</span><br><span class="line">    log.<span class="title function_">error</span>(&#123; message, stack, url, timeStamp, <span class="keyword">type</span> &#125;);</span><br><span class="line">  &#125;, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>http请求异常，这个一般会封装到全局的<code>fetch</code>方法里统一处理</p>
+</li>
+</ol>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7100841779854835719/#heading-23">一文摸清前端监控自研实践（三）错误监控</a></li>
+<li><a target="_blank" rel="noopener" href="https://web.dev/vitals/">Web 指标</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/web-vitals">web-vitals</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000041265668">你需要了解的Node.js内存限制</a></li>
+</ol>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>更新于 2023-03-17</p></div> 
+    <div class="post-entry__tags"><a href="/tags/typescript/" class="post-tags__link button"># typescript</a><a href="/tags/Electron/" class="post-tags__link button"># Electron</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            下一篇
+                        </div>
+                        <div class="nav__title">
+                            Javascript内存泄漏
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+     
+    <a href="#" class="button" id="b2t" aria-label="回到顶部" title="回到顶部">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2022&nbsp;-&nbsp;2023 <a href="/">later的博客</a>
+        </p>
+    
+    
+    <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p> -->
+</footer>
+
+        </div>
+        
+    <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+    <script>
+        window.lazyLoadOptions = {
+            elements_selector: ".lazy",
+            threshold: 0
+        };
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('true'),
+            auto_fancybox = Boolean('false')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+    </body>
+</html>

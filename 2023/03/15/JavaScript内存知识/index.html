@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    
+    
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x132.png">
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>JavaScript内存知识 | later的博客</title>
+
+
+    <meta name="keywords" content="内存">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="JavaScript内存知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript内存知识">
+<meta property="og:url" content="http://example.com/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="later的博客">
+<meta property="og:description" content="JavaScript内存知识">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/01.png">
+<meta property="og:image" content="http://example.com/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/02.png">
+<meta property="og:image" content="http://example.com/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/03.png">
+<meta property="og:image" content="http://example.com/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/04.png">
+<meta property="og:image" content="http://example.com/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/05.png">
+<meta property="og:image" content="http://example.com/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/06.png">
+<meta property="og:image" content="http://example.com/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/07.png">
+<meta property="og:image" content="http://example.com/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/08.png">
+<meta property="article:published_time" content="2023-03-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-14T16:00:00.000Z">
+<meta property="article:author" content="Hou">
+<meta property="article:tag" content="内存">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/01.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/atom-one-light.css" media="none" >
+        
+            <link rel="stylesheet" id="hl-dark-theme" href="/css/highlight/atom-one-dark.css" media="none">
+        
+    
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/style/dark.css">
+
+    
+<script src="/js/darkmode.js"></script>
+
+
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+    <body>
+        <div id="app" tabindex="-1">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">later的博客</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/category/" class="navbar-menu button">分类</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+            </div>
+        
+        
+        
+    <a href="/search/" id="btn-search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="32"><path d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z"></path></svg>
+    </a>
+
+
+        
+        
+    <a href="javaScript:void(0);" id="btn-toggle-dark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/category/" class="dropdown-menu button">分类</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        JavaScript内存知识
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2023/03/" class="post-meta__date button">2023-03-15</a>
+        
+    <span class="separate-dot"></span><a href="/categories/javascript/" class="button">javascript</a>
+
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">内存生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript-%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-text">JavaScript 的内存分配</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%80%BC%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">值的初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98"><span class="toc-text">通过函数调用分配内存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%80%BC"><span class="toc-text">使用值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BD%93%E5%86%85%E5%AD%98%E4%B8%8D%E5%86%8D%E9%9C%80%E8%A6%81%E4%BD%BF%E7%94%A8%E6%97%B6%E9%87%8A%E6%94%BE"><span class="toc-text">当内存不再需要使用时释放</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-text">垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0"><span class="toc-text">引用计数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4"><span class="toc-text">标记清除</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">文章目录</div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">内存生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript-%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-text">JavaScript 的内存分配</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%80%BC%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">值的初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98"><span class="toc-text">通过函数调用分配内存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%80%BC"><span class="toc-text">使用值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BD%93%E5%86%85%E5%AD%98%E4%B8%8D%E5%86%8D%E9%9C%80%E8%A6%81%E4%BD%BF%E7%94%A8%E6%97%B6%E9%87%8A%E6%94%BE"><span class="toc-text">当内存不再需要使用时释放</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-text">垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0"><span class="toc-text">引用计数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4"><span class="toc-text">标记清除</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+    </div>
+
+
+<article class="post post__with-toc content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <blockquote>
+<p>由于字符串、对象和数组没有固定大小，所有当他们的大小已知时，才能对他们进行动态的存储分配。JavaScript程序每次创建字符串、数组或对象时，解释器都必须分配内存来存储那个实体。只要像这样动态地分配了内存，最终都要释放这些内存以便他们能够被再用，否则，JavaScript的解释器将会消耗完系统中所有可用的内存，造成系统崩溃。  –《JavaScript权威指南（第四版）》</p>
+</blockquote>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>像 C 语言这样的底层语言一般都有底层的内存管理接口，比如 malloc()和free()。相反，JavaScript 是在创建变量（对象，字符串等）时自动进行了分配内存，并且在不使用它们时“自动”释放。释放的过程称为垃圾回收。</p>
+<h3 id="内存生命周期"><a href="#内存生命周期" class="headerlink" title="内存生命周期"></a>内存生命周期</h3><p>不管什么程序语言，内存生命周期基本是一致的：</p>
+<img src="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/01.png" class="lazy" data-srcset="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/01.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+<ol>
+<li><strong>内存分配</strong> – 分配你所需要的内存</li>
+<li><strong>内存使用</strong> – 使用分配到的内存（读、写）</li>
+<li><strong>内存释放</strong> — 释放你明确不需要的内存，让其再次空闲和可用。</li>
+</ol>
+<h3 id="JavaScript-的内存分配"><a href="#JavaScript-的内存分配" class="headerlink" title="JavaScript 的内存分配"></a>JavaScript 的内存分配</h3><h4 id="值的初始化"><a href="#值的初始化" class="headerlink" title="值的初始化"></a>值的初始化</h4><p>JavaScript 在定义变量时就完成了内存分配。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> n = <span class="number">123</span>; <span class="comment">// 给数值变量分配内存</span></span><br><span class="line"><span class="keyword">var</span> s = <span class="string">&quot;azerty&quot;</span>; <span class="comment">// 给字符串分配内存</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> o = &#123;</span><br><span class="line">  <span class="attr">a</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">b</span>: <span class="literal">null</span></span><br><span class="line">&#125;; <span class="comment">// 给对象及其包含的值分配内存</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 给数组及其包含的值分配内存（就像对象一样）</span></span><br><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>, <span class="literal">null</span>, <span class="string">&quot;abra&quot;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">a</span>)&#123;</span><br><span class="line">  <span class="keyword">return</span> a + <span class="number">2</span>;</span><br><span class="line">&#125; <span class="comment">// 给函数（可调用的对象）分配内存</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数表达式也能分配一个对象</span></span><br><span class="line">someElement.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">  someElement.<span class="property">style</span>.<span class="property">backgroundColor</span> = <span class="string">&#x27;blue&#x27;</span>;</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="通过函数调用分配内存"><a href="#通过函数调用分配内存" class="headerlink" title="通过函数调用分配内存"></a>通过函数调用分配内存</h4><p>有些函数调用结果是分配对象内存：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="title class_">Date</span>(); <span class="comment">// 分配一个 Date 对象</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> e = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>); <span class="comment">// 分配一个 DOM 元素</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>有些方法分配新变量或者新对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">&quot;azerty&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> s2 = s.<span class="title function_">substr</span>(<span class="number">0</span>, <span class="number">3</span>); <span class="comment">// s2 是一个新的字符串</span></span><br><span class="line"><span class="comment">// 因为字符串是不变量，</span></span><br><span class="line"><span class="comment">// JavaScript 可能决定不分配内存，</span></span><br><span class="line"><span class="comment">// 只是存储了 [0-3] 的范围。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = [<span class="string">&quot;ouais ouais&quot;</span>, <span class="string">&quot;nan nan&quot;</span>];</span><br><span class="line"><span class="keyword">var</span> a2 = [<span class="string">&quot;generation&quot;</span>, <span class="string">&quot;nan nan&quot;</span>];</span><br><span class="line"><span class="keyword">var</span> a3 = a.<span class="title function_">concat</span>(a2);</span><br><span class="line"><span class="comment">// 新数组有四个元素，是 a 连接 a2 的结果</span></span><br></pre></td></tr></table></figure>
+<h4 id="使用值"><a href="#使用值" class="headerlink" title="使用值"></a>使用值</h4><p>使用值的过程实际上是对分配内存进行读取与写入的操作。读取与写入可能是写入一个变量或者一个对象的属性值，甚至传递函数的参数。</p>
+<h4 id="当内存不再需要使用时释放"><a href="#当内存不再需要使用时释放" class="headerlink" title="当内存不再需要使用时释放"></a>当内存不再需要使用时释放</h4><p>大多数内存管理的问题都在这个阶段。在这里最艰难的任务是找到“哪些被分配的内存确实已经不再需要了”。它往往要求开发人员来确定在程序中哪一块内存不再需要并且释放它。</p>
+<p>高级语言解释器嵌入了“垃圾回收器”，它的主要工作是跟踪内存的分配和使用，以便当分配的内存不再使用时，自动释放它。这只能是一个近似的过程，因为要知道是否仍然需要某块内存是无法判定的（无法通过某种算法解决）。</p>
+<h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><p>自动寻找是否一些内存“不再需要”的问题是无法判定的。因此，垃圾回收实现只能有限制的解决一般问题。主要的垃圾回收算法都有局限性。</p>
+<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><p>这是最初级的垃圾收集算法。此算法把“对象是否不再需要”简化定义为“对象有没有其他对象引用到它”。如果没有引用指向该对象（零引用），对象将被垃圾回收机制回收。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];  <span class="comment">// [1, 2, 3, 4] 被变量arr引用, 引用次数+1 =&gt; 1</span></span><br><span class="line">arr = <span class="function">() =&gt;</span> &#123;&#125;;  <span class="comment">// 变量arr 引用了一个函数， [1, 2, 3, 4] 引用次数-1 =&gt; 0  [1, 2, 3, 4]占用空间被回收</span></span><br></pre></td></tr></table></figure>
+<p><strong>问题</strong>：循环引用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">var</span> obj1 = &#123;&#125;;</span><br><span class="line">  <span class="keyword">var</span> obj2 = &#123;&#125;;</span><br><span class="line">  obj1.<span class="property">a</span> = obj2; <span class="comment">// o 引用 o2</span></span><br><span class="line">  obj2.<span class="property">a</span> = obj1; <span class="comment">// o2 引用 o</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>当函数 func 执行结束后，返回值为 undefined，所以整个函数以及内部的变量都应该被回收，但根据引用计数方法，obj1 和 obj2 的引用次数都不为 0，所以他们不会被回收。</p>
+<p>要解决循环引用的问题，最好是在不使用它们的时候手工将它们设为空</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">obj1 = <span class="literal">null</span>;</span><br><span class="line">obj2 = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="标记清除"><a href="#标记清除" class="headerlink" title="标记清除"></a>标记清除</h4><p>定期执行以下“垃圾回收”步骤：</p>
+<ul>
+<li>垃圾收集器找到所有的根，并“标记”（记住）它们。</li>
+<li>然后它遍历并“标记”来自它们的所有引用。</li>
+<li>然后它遍历标记的对象并标记 它们的 引用。所有被遍历到的对象都会被记住，以免将来再次遍历到同一个对象。</li>
+<li>……如此操作，直到所有可达的（从根部）引用都被访问到。</li>
+<li>没有被标记的对象都会被删除。</li>
+</ul>
+<p>JavaScript 中主要的内存管理概念是 <strong>可达性</strong>。</p>
+<p>简而言之，“可达”值是那些以某种方式可访问或可用的值。它们一定是存储在内存中的。</p>
+<p><strong>一个简单的例子</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user 具有对这个对象的引用</span></span><br><span class="line"><span class="keyword">let</span> user = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;John&quot;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<img src="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/02.png" class="lazy" data-srcset="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/02.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+<p>变量 <code>&quot;user&quot;</code> 引用了对象 <code>&#123;name：&quot;John&quot;&#125;</code></p>
+<p>如果 <code>user</code> 的值被重写了，这个引用就没了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/03.png" class="lazy" data-srcset="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/03.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+<p>对象<code>&#123;name：&quot;John&quot;&#125;</code>变成不可达的了。因为没有引用了，就不能访问到它了。垃圾回收器会认为它是垃圾数据并进行回收，然后释放内存。</p>
+<p><strong>相互关联的对象</strong><br>一个更复杂的例子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">marry</span>(<span class="params">man, woman</span>) &#123;</span><br><span class="line">  woman.<span class="property">husband</span> = man;</span><br><span class="line">  man.<span class="property">wife</span> = woman;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">father</span>: man,</span><br><span class="line">    <span class="attr">mother</span>: woman</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> family = <span class="title function_">marry</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;John&quot;</span></span><br><span class="line">&#125;, &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;Ann&quot;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><code>marry</code> 函数通过让两个对象相互引用使它们“结婚”了，并返回了一个包含这两个对象的新对象。</p>
+<p>由此产生的内存结构：</p>
+<img src="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/04.png" class="lazy" data-srcset="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/04.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+<p>到目前为止，所有对象都是可达的。</p>
+<p>现在让我们移除两个引用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> family.<span class="property">father</span>;</span><br><span class="line"><span class="keyword">delete</span> family.<span class="property">mother</span>.<span class="property">husband</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/05.png" class="lazy" data-srcset="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/05.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+<p>仅删除这两个引用中的一个是不够的，因为所有的对象仍然都是可达的。</p>
+<p>但是，如果我们把这两个都删除，那么我们可以看到再也没有对 John 的引用了：</p>
+<img src="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/06.png" class="lazy" data-srcset="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/06.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+<p>对外引用不重要，只有传入引用才可以使对象可达。所以，John 现在是不可达的，并且将被从内存中删除，同时 John 的所有数据也将变得不可达。</p>
+<p>经过垃圾回收：</p>
+<img src="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/07.png" class="lazy" data-srcset="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/07.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+<p><strong>无法到达的岛屿</strong><br>几个对象相互引用，但外部没有对其任意对象的引用，这些对象也可能是不可达的，并被从内存中删除。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">family = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/08.png" class="lazy" data-srcset="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/08.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+
+<p><strong>优化措施</strong></p>
+<ul>
+<li><strong>分代收集（Generational collection）</strong>—— 对象被分成两组：“新的”和“旧的”。在典型的代码中，许多对象的生命周期都很短：它们出现、完成它们的工作并很快死去，因此在这种情况下跟踪新对象并将其从内存中清除是有意义的。那些长期存活的对象会变得“老旧”，并且被检查的频次也会降低。</li>
+<li><strong>增量收集（Incremental collection）</strong>—— 如果有许多对象，并且我们试图一次遍历并标记整个对象集，则可能需要一些时间，并在执行过程中带来明显的延迟。因此，引擎将现有的整个对象集拆分为多个部分，然后将这些部分逐一清除。这样就会有很多小型的垃圾收集，而不是一个大型的。这需要它们之间有额外的标记来追踪变化，但是这样会带来许多微小的延迟而不是一个大的延迟。</li>
+<li><strong>闲时收集（Idle-time collection）</strong>—— 垃圾收集器只会在 CPU 空闲时尝试运行，以减少可能对代码执行的影响。</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management">内存管理</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.javascript.info/garbage-collection">垃圾回收</a></li>
+</ol>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>更新于 2023-03-15</p></div> 
+    <div class="post-entry__tags"><a href="/tags/%E5%86%85%E5%AD%98/" class="post-tags__link button"># 内存</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+                <a href="/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/" class="nav__link">
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M589.088 790.624L310.464 512l278.624-278.624 45.248 45.248L400.96 512l233.376 233.376z" fill="#808080"></path></svg>
+                    </div>
+                    <div>
+                        <div class="nav__label">
+                            上一篇
+                        </div>
+                        <div class="nav__title">
+                            Javascript内存泄漏
+                        </div>
+                    </div>
+                </a>
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2023/03/14/%E5%89%8D%E7%AB%AF%E9%9F%B3%E9%A2%91%E5%BD%95%E5%88%B6%E5%92%8C%E6%92%AD%E6%94%BE%E6%96%B9%E6%A1%88/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            下一篇
+                        </div>
+                        <div class="nav__title">
+                            前端音频录制和播放方案
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+     
+    <a href="#" class="button" id="b2t" aria-label="回到顶部" title="回到顶部">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2022&nbsp;-&nbsp;2023 <a href="/">later的博客</a>
+        </p>
+    
+    
+    <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p> -->
+</footer>
+
+        </div>
+        
+    <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+    <script>
+        window.lazyLoadOptions = {
+            elements_selector: ".lazy",
+            threshold: 0
+        };
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('true'),
+            auto_fancybox = Boolean('false')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+    </body>
+</html>

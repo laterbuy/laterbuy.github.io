@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    
+    
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x132.png">
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>Javascript内存泄漏 | later的博客</title>
+
+
+    <meta name="keywords" content="内存">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="Javascript内存泄漏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript内存泄漏">
+<meta property="og:url" content="http://example.com/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/index.html">
+<meta property="og:site_name" content="later的博客">
+<meta property="og:description" content="Javascript内存泄漏">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/01.png">
+<meta property="og:image" content="http://example.com/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/02.png">
+<meta property="og:image" content="http://example.com/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/03.png">
+<meta property="og:image" content="http://example.com/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/04.png">
+<meta property="article:published_time" content="2023-03-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-15T16:00:00.000Z">
+<meta property="article:author" content="Hou">
+<meta property="article:tag" content="内存">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/01.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+    
+    
+        <link rel="stylesheet" id="hl-default-theme" href="/css/highlight/atom-one-light.css" media="none" >
+        
+            <link rel="stylesheet" id="hl-dark-theme" href="/css/highlight/atom-one-dark.css" media="none">
+        
+    
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/style/dark.css">
+
+    
+<script src="/js/darkmode.js"></script>
+
+
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+    <body>
+        <div id="app" tabindex="-1">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">later的博客</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">首页</a>
+                
+                    <a href="/tags/" class="navbar-menu button">标签</a>
+                
+                    <a href="/category/" class="navbar-menu button">分类</a>
+                
+                    <a href="/archives/" class="navbar-menu button">归档</a>
+                
+            </div>
+        
+        
+        
+    <a href="/search/" id="btn-search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="32"><path d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z"></path></svg>
+    </a>
+
+
+        
+        
+    <a href="javaScript:void(0);" id="btn-toggle-dark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">首页</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">标签</a>
+                
+                    <a href="/category/" class="dropdown-menu button">分类</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">归档</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        Javascript内存泄漏
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2023/03/" class="post-meta__date button">2023-03-16</a>
+        
+    <span class="separate-dot"></span><a href="/categories/javascript/" class="button">javascript</a>
+
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+    <aside class="post-side">
+        <div class="post-side__toc">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%96%B9%E5%BC%8F%E5%88%86%E6%9E%90"><span class="toc-text">常见的内存泄漏方式分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-text">全局变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B8%E7%A6%BBDOM%E5%BC%95%E7%94%A8"><span class="toc-text">游离DOM引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AA%E6%B8%85%E7%90%86%E7%9A%84console"><span class="toc-text">未清理的console</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%97%E5%BF%98%E7%9A%84%E5%AE%9A%E6%97%B6%E5%99%A8%E5%92%8C%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-text">遗忘的定时器和事件监听器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AD%E5%8C%85"><span class="toc-text">闭包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%9B%91%E6%B5%8B"><span class="toc-text">内存监测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Performance-memory-%E5%B7%B2%E5%BC%83%E7%94%A8"><span class="toc-text">Performance.memory(已弃用)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#performance-measureUserAgentSpecificMemory"><span class="toc-text">performance.measureUserAgentSpecificMemory()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-text">区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol>
+        </div>
+    </aside>
+    <a class="btn-toc button" id="btn-toc" tabindex="0">
+        <svg viewBox="0 0 1024 1024" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M128 256h64V192H128zM320 256h576V192H320zM128 544h64v-64H128zM320 544h576v-64H320zM128 832h64v-64H128zM320 832h576v-64H320z" fill="currentColor"></path>
+        </svg>
+    </a>
+    <div class="toc-menus" id="toc-menus">
+        <div class="toc-title">文章目录</div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%96%B9%E5%BC%8F%E5%88%86%E6%9E%90"><span class="toc-text">常见的内存泄漏方式分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-text">全局变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B8%E7%A6%BBDOM%E5%BC%95%E7%94%A8"><span class="toc-text">游离DOM引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AA%E6%B8%85%E7%90%86%E7%9A%84console"><span class="toc-text">未清理的console</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%97%E5%BF%98%E7%9A%84%E5%AE%9A%E6%97%B6%E5%99%A8%E5%92%8C%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-text">遗忘的定时器和事件监听器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AD%E5%8C%85"><span class="toc-text">闭包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%9B%91%E6%B5%8B"><span class="toc-text">内存监测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Performance-memory-%E5%B7%B2%E5%BC%83%E7%94%A8"><span class="toc-text">Performance.memory(已弃用)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#performance-measureUserAgentSpecificMemory"><span class="toc-text">performance.measureUserAgentSpecificMemory()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-text">区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol>
+    </div>
+
+
+<article class="post post__with-toc content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <p>分析下网上常说的几种Javascript内存泄漏方式，前置知识：Javascript内存回收方式是标记清除法。</p>
+<h2 id="常见的内存泄漏方式分析"><a href="#常见的内存泄漏方式分析" class="headerlink" title="常见的内存泄漏方式分析"></a>常见的内存泄漏方式分析</h2><h3 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h3><p>全局变量标记不能被清除，会一直占用内存</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params"></span>)&#123;</span><br><span class="line">  test1 = <span class="keyword">new</span> <span class="title class_">Array</span>(<span class="number">10000000</span>).<span class="title function_">fill</span>(<span class="string">&#x27;isboyjc1&#x27;</span>)</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">test2</span> = <span class="keyword">new</span> <span class="title class_">Array</span>(<span class="number">10000000</span>).<span class="title function_">fill</span>(<span class="string">&#x27;isboyjc2&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">fn</span>()</span><br></pre></td></tr></table></figure>
+<img src="/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/01.png" class="lazy" data-srcset="/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/01.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+<p>局部变量没有引用会再下次gc时被清除</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">let</span> test1 = <span class="keyword">new</span> <span class="title class_">Array</span>(<span class="number">10000000</span>).<span class="title function_">fill</span>(<span class="string">&#x27;isboyjc1&#x27;</span>)</span><br><span class="line">  <span class="keyword">let</span> test2 = <span class="keyword">new</span> <span class="title class_">Array</span>(<span class="number">10000000</span>).<span class="title function_">fill</span>(<span class="string">&#x27;isboyjc2&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">fn</span>()</span><br></pre></td></tr></table></figure>
+<img src="/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/02.png" class="lazy" data-srcset="/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/02.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+<h3 id="游离DOM引用"><a href="#游离DOM引用" class="headerlink" title="游离DOM引用"></a>游离DOM引用</h3><p>代码中进行 DOM 时会使用变量缓存 DOM 节点的引用，但移除节点的时候，我们应该同步释放缓存的引用，否则游离的子树无法释放。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;root&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">&quot;ul&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">id</span>=<span class="string">&quot;li3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> root = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#root&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> ul = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#ul&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> li3 = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#li3&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 由于ul变量存在，整个ul及其子元素都不能GC</span></span></span><br><span class="line"><span class="language-javascript">  root.<span class="title function_">removeChild</span>(ul)</span></span><br><span class="line"><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 虽置空了ul变量，但由于li3变量引用ul的子节点，所以ul元素依然不能被GC</span></span></span><br><span class="line"><span class="language-javascript">  ul = <span class="literal">null</span></span></span><br><span class="line"><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 已无变量引用，此时可以GC</span></span></span><br><span class="line"><span class="language-javascript">  li3 = <span class="literal">null</span></span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="未清理的console"><a href="#未清理的console" class="headerlink" title="未清理的console"></a>未清理的console</h3><p>浏览器保存了对象的引用，未清理的 <code>console</code> 如果输出了对象也会造成内存泄漏</p>
+<h3 id="遗忘的定时器和事件监听器"><a href="#遗忘的定时器和事件监听器" class="headerlink" title="遗忘的定时器和事件监听器"></a>遗忘的定时器和事件监听器</h3><p><code>addEventListener</code>、<code>setTimeout</code> 、 <code>setInterval</code>和<code>requestAnimationFrame</code>等。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;resize&quot;</span>, <span class="variable language_">this</span>.<span class="property">doSomething</span>)</span><br><span class="line"> <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&quot;resize&quot;</span>, <span class="variable language_">this</span>.<span class="property">doSomething</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> someResource = <span class="title function_">getData</span>()</span><br><span class="line"><span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> node = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;Node&#x27;</span>)</span><br><span class="line">	<span class="keyword">if</span>(node) &#123;</span><br><span class="line">    node.<span class="property">innerHTML</span> = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(someResource))</span><br><span class="line">	&#125;</span><br><span class="line">&#125;, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p><strong>闭包并不会引发内存泄漏</strong><br>由于IE9 之前的版本对JScript 对象和COM 对象使用不同的垃圾收集。因此闭包在IE 的这些版本中会导致一些特殊的问题。具体来说，如果闭包的作用域链中保存着一个HTML 元素，那么就意味着该元素将无法被销毁：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">assignHandler</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> element = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;someElement&quot;</span>);</span><br><span class="line">  element.<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">alert</span>(element.<span class="property">id</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看两个例子反证一下：</p>
+<img src="/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/03.png" class="lazy" data-srcset="/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/03.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+<img src="/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/04.png" class="lazy" data-srcset="/2023/03/16/Javascript%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/04.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEXMzMyWlpYU2uzLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJggg==" class="">
+
+<h2 id="内存监测"><a href="#内存监测" class="headerlink" title="内存监测"></a>内存监测</h2><h3 id="Performance-memory-已弃用"><a href="#Performance-memory-已弃用" class="headerlink" title="Performance.memory(已弃用)"></a>Performance.memory(已弃用)</h3><p>浏览器在 <code>performance</code> 对象上加上了 <code>memory</code> 属性，通过获取 <code>performance.memory</code> 可以得到一组当前页面使用内存数据的信息。具体如下：</p>
+<ul>
+<li><code>jsHeapSizeLimit</code>：表示当前页面最多可以获得的 JavaScript 堆大小；</li>
+<li><code>totalJSHeapSize</code>：表示当前页面已经分配的 JavaScript 堆大小；</li>
+<li><code>usedJsHeapSize</code>：表示当前页面 JavaScript 已经使用的堆大小。</li>
+</ul>
+<p>这里，三个值的单位是字节（byte），且有恒定的不等式：<code>jsHeapSizeLimit</code> &gt;&#x3D; <code>totalJSHeapSize</code> &gt;&#x3D; <code>usedJsHeapSize</code>。</p>
+<p>浏览器在分配内存的时候，会一次性向系统申请一块内存，然后在 JavaScript 需要的时候直接提供使用，因而 <code>totalJSHeapSize</code> 总是大于 <code>usedJsHeapSize</code> 的。如果 JavaScript 需要的内存多于已经申请的量，就会继续申请一块，直到达到 <code>jsHeapSizeLimit</code> 的上限，触发页面崩溃。</p>
+<p>通过观察 <code>jsHeapSizeLimit</code> 和 <code>totalJSHeapSize</code> 这两个字段，可以用于监控当前的页面是否有耗尽内存的危险；同时，如果内存一直在涨，不见回落，很可能需要排查是否有潜在的内存泄漏危险。</p>
+<p>需要注意的几点：</p>
+<ol>
+<li><p>出于安全方面的考虑，API 并不会给出非常准确的数据，并且给出的数据会额外加上一些干扰(<a target="_blank" rel="noopener" href="https://github.com/WICG/performance-memory/blob/master/explainer.md#security">参考这个</a>，以及这个<a target="_blank" rel="noopener" href="https://bugs.webkit.org/attachment.cgi?id=154876&action=prettypatch">改动</a>)；<br>(经过测试定时1s获取是可以的，40ms则不行)</p>
+</li>
+<li><p>如果需要 Chrome 给出精确的内存数据，可以在启动的时候加上 –enable-precise-memory-info；</p>
+</li>
+<li><p><code>performance.memory</code> 无法通过 <code>JSON.stringify</code> 获取到数据（结果是 <code>&#123;&#125;</code>），一些分析和解决办法可以参考<a target="_blank" rel="noopener" href="https://medium.com/@iamoryanmoshe/the-object-that-misbehaved-window-performance-memory-fe338736aed0">这篇文章</a>。</p>
+</li>
+</ol>
+<h3 id="performance-measureUserAgentSpecificMemory"><a href="#performance-measureUserAgentSpecificMemory" class="headerlink" title="performance.measureUserAgentSpecificMemory()"></a>performance.measureUserAgentSpecificMemory()</h3><p>周期调用以跟踪内存使用情况在会话期间的变化情况。</p>
+<p><strong>安全要求</strong>需要在响应头中开启这个</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cross-Origin-Opener-Policy: same-origin</span><br><span class="line">Cross-Origin-Embedder-Policy: require-corp</span><br></pre></td></tr></table></figure>
+<p>可以这样监测跨源隔离是否成功</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (crossOriginIsolated) &#123;</span><br><span class="line">  <span class="comment">// Use measureUserAgentSpecificMemory</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>监视内存使用情况</strong> ：可以使用指数分布随机每隔五分钟调用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">runMemoryMeasurements</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> interval = -<span class="title class_">Math</span>.<span class="title function_">log</span>(<span class="title class_">Math</span>.<span class="title function_">random</span>()) * <span class="number">5</span> * <span class="number">60</span> * <span class="number">1000</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Next measurement in <span class="subst">$&#123;<span class="built_in">Math</span>.round(interval / <span class="number">1000</span>)&#125;</span> seconds.`</span>);</span><br><span class="line">  <span class="built_in">setTimeout</span>(measureMemory, interval);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">measureMemory</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> memorySample = <span class="keyword">await</span> performance.<span class="title function_">measureUserAgentSpecificMemory</span>();</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(memorySample);</span><br><span class="line">  <span class="title function_">runMemoryMeasurements</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (crossOriginIsolated) &#123;</span><br><span class="line">  <span class="title function_">runMemoryMeasurements</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>主要区别在于 <code>performance.memory</code> 返回 JavaScript 堆的大小，而 <code>performance.measureUserAgentSpecificMemory</code> 只返回当前网页使用的内存。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6984188410659340324#heading-4">你的程序中可能存在内存泄漏</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.finclip.com/news/f/296.html">闭包会造成内存泄漏吗？</a></li>
+<li><a target="_blank" rel="noopener" href="https://web.dev/effectivemanagement/">有效管理 Gmail 规模的内存</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Performance/memory">Performance.memory</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Performance/measureUserAgentSpecificMemory">performance.measureUserAgentSpecificMemory</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039415942">了不起的Chrome浏览器：Chrome 89开启Web应用的物联网时代</a></li>
+<li><a target="_blank" rel="noopener" href="https://web.dev/monitor-total-page-memory-usage/">monitor-total-page-memory-usage</a></li>
+<li><a target="_blank" rel="noopener" href="https://laysent.com/til/2019-12-30_performance-memory">Performance Memory</a></li>
+</ol>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>更新于 2023-03-16</p></div> 
+    <div class="post-entry__tags"><a href="/tags/%E5%86%85%E5%AD%98/" class="post-tags__link button"># 内存</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+                <a href="/2023/03/17/%E7%AE%80%E5%8D%95%E7%9A%84Electron%E7%9B%91%E6%8E%A7/" class="nav__link">
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M589.088 790.624L310.464 512l278.624-278.624 45.248 45.248L400.96 512l233.376 233.376z" fill="#808080"></path></svg>
+                    </div>
+                    <div>
+                        <div class="nav__label">
+                            上一篇
+                        </div>
+                        <div class="nav__title">
+                            简单的Electron监控
+                        </div>
+                    </div>
+                </a>
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2023/03/15/JavaScript%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            下一篇
+                        </div>
+                        <div class="nav__title">
+                            JavaScript内存知识
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+     
+    <a href="#" class="button" id="b2t" aria-label="回到顶部" title="回到顶部">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M233.376 722.752L278.624 768 512 534.624 745.376 768l45.248-45.248L512 444.128zM192 352h640V288H192z" fill="currentColor"></path>
+        </svg>
+    </a>
+
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2022&nbsp;-&nbsp;2023 <a href="/">later的博客</a>
+        </p>
+    
+    
+    <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p> -->
+</footer>
+
+        </div>
+        
+    <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+    <script>
+        window.lazyLoadOptions = {
+            elements_selector: ".lazy",
+            threshold: 0
+        };
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+    
+ 
+
+
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.4.1/dist/jquery.fancybox.min.js"></script>
+
+    <script>
+        let lazyloadT = Boolean('true'),
+            auto_fancybox = Boolean('false')
+        if (auto_fancybox) {
+            $(".post__content").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        } else {
+            $(".post__content").find("fancybox").find('img').each(function () {
+                var element = document.createElement("a");
+                $(element).attr("data-fancybox", "gallery");
+                $(element).attr("href", $(this).attr("src"));
+                if (lazyloadT) {
+                    $(element).attr("href", $(this).attr("data-srcset"));
+                }
+                $(this).wrap(element);
+            });
+        }
+    </script>
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+    </body>
+</html>
