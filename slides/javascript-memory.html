@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>JavaScript内存管理</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/atom-one-light.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/solarized.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+
+   
+<style>
+  :root {
+     --r-main-font-size: 30px;
+        
+  }
+</style>
+
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h3 style="ext-transform:" none;="">问题: 为什么要了解JavaScript的内存管理？</h3>
+<p class="fragment fade-up">因为被<strong>内存泄漏</strong>、<strong>内存溢出</strong>这样的名词困扰。</p>
+
+            </section>
+    
+
+
+
+    
+    <section>
+        <section >
+            <h3>为什么前端开发很少关注<strong>内存泄漏</strong>、<strong>内存溢出</strong>？</h3>
+<p class="fragment fade-up">因为浏览器的V8引擎出色的完成了它的工作。</p>
+
+            </section>
+        
+            <section >
+                <h3>一个小问题：什么是内存泄漏？</h3>
+<blockquote class="fragment fade-up">
+<p>内存泄漏是计算机程序的内存管理失当，因而失去对一段已分配内存空间的控制，程序继续占用已不再使用的内存空间，或是存储器所存储之对象无法透过执行代码而访问，令内存资源空耗。–维基百科</p>
+</blockquote>
+<p class="fragment fade-up">简单理解就是已分配的内存没有被垃圾回收。</p>
+
+            </section>
+        
+            <section >
+                <h3>再来一个小问题：什么是垃圾回收？</h3>
+<blockquote class="fragment fade-up">
+<p>像 C 语言这样的底层语言一般都有底层的内存管理接口，比如 malloc()和free()。相反，JavaScript 是在创建变量（对象，字符串等）时自动进行了分配内存，并且在不使用它们时“自动”释放。释放的过程称为垃圾回收。 --MDN</p>
+</blockquote>
+
+            </section>
+        
+
+    </section>
+    
+
+
+
+    
+        <section >
+            
+            <h3>内存生命周期</h3>
+<p>不管什么程序语言，内存生命周期基本是一致的：
+<img src="./public/javascript-memory/01.png" alt=""></p>
+<ol>
+<li><strong>内存分配</strong> – 分配你所需要的内存</li>
+<li><strong>内存使用</strong> – 使用分配到的内存（读、写）</li>
+<li><strong>内存释放</strong> — 释放你明确不需要的内存，让其再次空闲和可用。</li>
+</ol>
+
+            </section>
+    
+
+
+
+    
+    <section>
+        <section >
+            <h3 style="ext-transform:" none;="">JavaScript 的内存生命周期</h3>
+<ol>
+<li>值的初始化(<strong>内存分配</strong>)</li>
+</ol>
+<pre><code class="language-js">// 值的初始化
+var n = 123; // 给数值变量分配内存
+var s = &quot;azerty&quot;; // 给字符串分配内存
+// 函数调用
+var d = new Date(); // 分配一个 Date 对象
+var e = document.createElement('div'); // 分配一个 DOM 元素
+</code></pre>
+
+            </section>
+        
+            <section >
+                <h3 style="ext-transform:" none;="">JavaScript 的内存生命周期</h3>
+<ol start="2">
+<li>使用值(<strong>内存使用</strong>)</li>
+</ol>
+<p>使用值的过程实际上是对分配内存进行读取与写入的操作。读取与写入可能是写入一个变量或者一个对象的属性值，甚至传递函数的参数。</p>
+
+            </section>
+        
+            <section >
+                <h3 style="ext-transform:" none;="">JavaScript 的内存生命周期</h3>
+<ol start="3">
+<li>当内存不再需要使用时释放(<strong>内存释放</strong>)
+高级语言解释器嵌入了“垃圾回收器”，它的主要工作是跟踪内存的分配和使用，以便当分配的内存不再使用时，自动释放它。这只能是一个近似的过程，因为要知道是否仍然需要某块内存是无法判定的(无法通过某种算法解决)</li>
+</ol>
+
+            </section>
+        
+
+    </section>
+    
+
+
+
+    
+        <section >
+            
+            <h3>垃圾回收</h3>
+<p>自动寻找是否一些内存“不再需要”的问题是无法判定的。因此，垃圾回收实现只能有限制的解决一般问题。主要的垃圾回收算法都有局限性。</p>
+<ol>
+<li class="fragment fade-up">引用计数</li>
+<li class="fragment fade-up">标记清除</li>
+</ol>
+
+            </section>
+    
+
+
+
+    
+    <section>
+        <section >
+            <h3>引用计数</h3>
+<p>这是最初级的垃圾收集算法。此算法把“对象是否不再需要”简化定义为“对象有没有其他对象引用到它”。如果没有引用指向该对象（零引用），对象将被垃圾回收机制回收。</p>
+<pre><code class="language-js">var arr = [1, 2, 3, 4];  // [1, 2, 3, 4] 被变量arr引用, 引用次数+1 =&gt; 1
+arr = () =&gt; {};  // 变量arr 引用了一个函数， [1, 2, 3, 4] 引用次数-1 =&gt; 0  [1, 2, 3, 4]占用空间被回收
+</code></pre>
+
+            </section>
+        
+            <section >
+                <h3>引用计数的问题</h3>
+<p>循环引用</p>
+<pre><code class="language-js">function f(){
+  var obj1 = {};
+  var obj2 = {};
+  obj1.a = obj2; // o 引用 o2
+  obj2.a = obj1; // o2 引用 o
+
+  return &quot;abc&quot;;
+}
+
+f();function f(){
+  var obj1 = {};
+  var obj2 = {};
+  obj1.a = obj2; // o 引用 o2
+  obj2.a = obj1; // o2 引用 o
+
+  return &quot;abc&quot;;
+}
+
+f();
+</code></pre>
+<p>当函数 func 执行结束后，返回值为 undefined，所以整个函数以及内部的变量都应该被回收，但根据引用计数方法，obj1 和 obj2 的引用次数都不为 0，所以他们不会被回收。</p>
+
+            </section>
+        
+            <section >
+                <h3>循环引用的解决方案</h3>
+<p>要解决循环引用的问题，最好是在不使用它们的时候手工将它们设为空</p>
+<pre><code class="language-js">obj1 = null;
+obj2 = null;
+</code></pre>
+
+            </section>
+        
+
+    </section>
+    
+
+
+
+    
+    <section>
+        <section >
+            <h3>标记清除</h3>
+<ul>
+<li>垃圾收集器找到所有的根，并“标记”（记住）它们。</li>
+<li>然后它遍历并“标记”来自它们的所有引用。</li>
+<li>然后它遍历标记的对象并标记 它们的 引用。所有被遍历到的对象都会被记住，以免将来再次遍历到同一个对象。</li>
+<li>……如此操作，直到所有可达的（从根部）引用都被访问到。</li>
+<li>没有被标记的对象都会被删除。</li>
+</ul>
+
+            </section>
+        
+            <section >
+                <p><img src="./public/javascript-memory/gc_mark_sweep.gif" alt=""></p>
+
+            </section>
+        
+            <section >
+                <h3>简单的例子</h3>
+<pre><code class="language-js">// user 具有对这个对象的引用
+let user = {
+  name: &quot;John&quot;
+};
+</code></pre>
+<p><img src="./public/javascript-memory/02.png" alt=""></p>
+<p>变量 “user” 引用了对象 <code>{name：&quot;John&quot;}</code></p>
+
+            </section>
+        
+            <section >
+                <p>如果 user 的值被重写了，这个引用就没了</p>
+<pre><code class="language-js">user = null;
+</code></pre>
+<p><img src="./public/javascript-memory/03.png" alt=""></p>
+<p>对象<code>{name：&quot;John&quot;}</code>无法被访问到了，垃圾回收器会认为它是垃圾数据并进行回收，然后释放内存。</p>
+
+            </section>
+        
+
+    </section>
+    
+
+
+
+    
+    <section>
+        <section >
+            <h3>常见的内存泄漏方式分析</h3>
+<ol>
+<li class="fragment fade-up">全局变量</li>
+<li class="fragment fade-up">游离DOM引用</li>
+<li class="fragment fade-up">未清理的console</li>
+<li class="fragment fade-up">遗忘的定时器和事件监听器</li>
+<li class="fragment fade-up">闭包?</li>
+</ol>
+
+            </section>
+        
+            <section >
+                <h3>全局变量</h3>
+<p>全局变量标记不能被清除，会一直占用内存</p>
+<pre><code class="language-js">function fn(){
+  test1 = new Array(10000000).fill('isboyjc1')
+  this.test2 = new Array(10000000).fill('isboyjc2')
+}
+fn()
+</code></pre>
+<p><img src="./public/javascript-memory/04.png" alt=""></p>
+
+            </section>
+        
+            <section >
+                <p>局部变量没有引用会再下次gc时被清除
+<img src="./public/javascript-memory/05.png" alt=""></p>
+
+            </section>
+        
+            <section >
+                <h2>游离DOM引用</h2>
+<p>代码中进行 DOM 时会使用变量缓存 DOM 节点的引用，但移除节点的时候，我们应该同步释放缓存的引用，否则游离的子树无法释放。</p>
+<pre><code class="language-js">&lt;div id=&quot;root&quot;&gt;
+  &lt;ul id=&quot;ul&quot;&gt;
+    &lt;li&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;/li&gt;
+    &lt;li id=&quot;li3&quot;&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+&lt;script&gt;
+  let root = document.querySelector('#root')
+  let ul = document.querySelector('#ul')
+  let li3 = document.querySelector('#li3')
+  
+  // 由于ul变量存在，整个ul及其子元素都不能GC
+  root.removeChild(ul)
+  
+  // 虽置空了ul变量，但由于li3变量引用ul的子节点，所以ul元素依然不能被GC
+  ul = null
+  
+  // 已无变量引用，此时可以GC
+  li3 = null
+&lt;/script&gt;
+</code></pre>
+
+            </section>
+        
+            <section >
+                <h3 style="ext-transform:" none;="">未清理的console</h3>
+<p>浏览器保存了对象的引用，未清理的 console 如果输出了对象也会造成内存泄漏</p>
+
+            </section>
+        
+            <section >
+                <h3>遗忘的定时器和事件监听器</h3>
+<p>addEventListener、setTimeout 、 setInterval和requestAnimationFrame等。</p>
+<pre><code class="language-js"> window.addEventListener(&quot;resize&quot;, this.doSomething)
+ window.removeEventListener(&quot;resize&quot;, this.doSomething)
+
+
+let someResource = getData()
+setInterval(() =&gt; {
+  const node = document.getElementById('Node')
+	if(node) {
+    node.innerHTML = JSON.stringify(someResource))
+	}
+}, 1000)
+</code></pre>
+
+            </section>
+        
+            <section >
+                <h3>闭包?</h3>
+<p><strong>闭包并不会引发内存泄漏</strong>由于IE9 之前的版本对JScript 对象和COM 对象使用不同的垃圾收集。因此闭包在IE 的这些版本中会导致一些特殊的问题。具体来说，如果闭包的作用域链中保存着一个HTML 元素，那么就意味着该元素将无法被销毁：</p>
+<pre><code class="language-js">function assignHandler() {
+  var element = document.getElementById(&quot;someElement&quot;);
+  element.onclick = function () {
+    alert(element.id);
+  };
+}
+</code></pre>
+
+            </section>
+        
+            <section >
+                <p>反证一下</p>
+<p><img src="./public/javascript-memory/06.png" alt=""></p>
+
+            </section>
+        
+            <section >
+                <p><img src="./public/javascript-memory/07.png" alt=""></p>
+
+            </section>
+        
+
+    </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: false,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
